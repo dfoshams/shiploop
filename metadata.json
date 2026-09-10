@@ -1,0 +1,8 @@
+{
+  "name": "SHIPLOOP 2 upgrade 3.10",
+  "description": "High-fidelity interactive maritime-finance prototype turning future fuel savings from vessel retrofits into financing mechanisms.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

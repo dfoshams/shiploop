@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -1000;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(0, 242, 255, 0.45);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+.animate-pulseGlow {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+  background-color: #020617;
+}
+
+body {
+  background-color: #020617;
+  color: #e2e8f0;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  position: relative;
+}
+
+/* Technical Data Grid Matrix Background */
+.tech-grid-bg {
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), 
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.tech-grid-dense {
+  background-image: 
+    linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px), 
+    linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Technical HUD Glass & Borders */
+.tech-panel {
+  background: rgba(2, 6, 23, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+}
+
+.tech-panel-cyan {
+  background: rgba(2, 6, 23, 0.9);
+  border: 1px solid rgba(0, 242, 255, 0.3);
+  backdrop-filter: blur(12px);
+}
+
+.tech-corner-accent {
+  position: relative;
+}
+.tech-corner-accent::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 8px;
+  height: 8px;
+  border-top: 2px solid #00f2ff;
+  border-left: 2px solid #00f2ff;
+}
+.tech-corner-accent::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 8px;
+  height: 8px;
+  border-bottom: 2px solid #00f2ff;
+  border-right: 2px solid #00f2ff;
+}
+
+::selection {
+  background-color: rgba(0, 242, 255, 0.35);
+  color: #ffffff;
+}
+
+/* Custom technical scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 0px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #00f2ff;
+}
+
