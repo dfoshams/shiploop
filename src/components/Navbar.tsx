@@ -111,17 +111,6 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Right utility triggers: Demo mode, Presentation Mode, Sources */}
         <div className="flex items-center gap-2 sm:gap-3">
           
-          {/* Simulated Data / Status Chip */}
-          <div 
-            id="demo-mode-badge"
-            className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/20 text-white/80 text-[10px] font-mono bg-white/5 tracking-wider"
-            title="All models utilize simulated parameters for academic demonstration."
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#00F2FF] animate-pulse" />
-            <span className="hidden sm:inline font-bold text-[#00F2FF]">SIMULATION_ACTIVE</span>
-            <span className="text-[9px] text-[#FFB347] font-semibold border-l border-white/20 pl-1.5 hidden md:inline">DEMO_v1.0</span>
-          </div>
-
           {/* Research Sources Drawer Button */}
           <button
             id="btn-open-sources"

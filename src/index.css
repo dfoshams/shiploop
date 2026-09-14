@@ -26,12 +26,27 @@
   }
 }
 
+@keyframes titleBreathing {
+  0%, 100% {
+    color: #F8FAFC;
+    text-shadow: 0 0 15px rgba(0, 242, 255, 0.1);
+  }
+  50% {
+    color: #00F2FF;
+    text-shadow: 0 0 25px rgba(0, 242, 255, 0.4);
+  }
+}
+
 .animate-fadeIn {
   animation: fadeIn 0.25s ease-out forwards;
 }
 
 .animate-pulseGlow {
   animation: pulseGlow 3s ease-in-out infinite;
+}
+
+.animate-titleBreathing {
+  animation: titleBreathing 8s ease-in-out infinite;
 }
 
 html {

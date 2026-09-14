@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Navbar } from './components/Navbar';
 import { CinematicIntro } from './components/CinematicIntro';
 import { TheProblem } from './components/TheProblem';
@@ -14,139 +14,154 @@ import { GlobalAndIndia } from './components/GlobalAndIndia';
 import { EcosystemAndBusiness } from './components/EcosystemAndBusiness';
 import { ScaleSimulator } from './components/ScaleSimulator';
 import { AhaAndFinalCTA } from './components/AhaAndFinalCTA';
+import { FinalQRPage } from './components/FinalQRPage';
 import { SourceDrawer } from './components/SourceDrawer';
 import { DEMO_DATA } from './data/demoData';
 import { SimulationParams } from './types';
 import { calculateSimulation } from './logic/financialModel';
-import { PresentationProvider, usePresentation } from './presentation/PresentationContext';
-import { PresentationStage } from './presentation/PresentationStage';
 import { EvidenceProvider, useEvidence } from './context/EvidenceContext';
+import { VerticalScrubber } from './components/VerticalScrubber';
+
+const SECTION_IDS = [
+  'intro',
+  'problem',
+  'insight',
+  'engine',
+  'simulator',
+  'waterfall',
+  'charter',
+  'verification',
+  'feet',
+  'risk',
+  'india',
+  'ecosystem',
+  'scale',
+  'aha-cta',
+  'scan-qr',
+];
 
 function MainAppContent() {
   const [params, setParams] = useState<SimulationParams>(DEMO_DATA.defaultSimulationParams);
   const [activeSection, setActiveSection] = useState<string>('intro');
+  const [isPresentationMode, setIsPresentationMode] = useState<boolean>(false);
   const { openSource } = useEvidence();
-
-  const { 
-    isPresentationMode, 
-    enterPresentationMode 
-  } = usePresentation();
 
   // Live real-time financial simulation calculations
   const result = calculateSimulation(params);
+  
+  // Track manual scrolling to disable IntersectionObserver updates during auto-scroll
+  const isAutoScrolling = useRef(false);
+  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  // Smooth scroll helper for Exploration Mode
+  // Smooth scroll helper
   const scrollToSection = (sectionId: string) => {
     const el = document.getElementById(sectionId);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      isAutoScrolling.current = true;
+      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+      
       setActiveSection(sectionId);
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      
+      // Re-enable observer updates after scrolling finishes
+      scrollTimeout.current = setTimeout(() => {
+        isAutoScrolling.current = false;
+      }, 1000);
     }
   };
 
-  // Keyboard shortcut listener for Exploration Mode
+  // Keyboard shortcut listener
   useEffect(() => {
-    if (isPresentationMode) return; // In presentation mode, keyboard is handled by PresentationContext
-
     const handleKeyDown = (e: KeyboardEvent) => {
       if (['INPUT', 'TEXTAREA', 'SELECT'].includes((e.target as HTMLElement)?.tagName)) {
         return;
       }
+      if (e.key === 'p' || e.key === 'P') {
+        setIsPresentationMode(prev => !prev);
+        return;
+      }
+      if (e.key === 'Escape' && isPresentationMode) {
+        setIsPresentationMode(false);
+        return;
+      }
 
-      if (e.key === '1') {
-        scrollToSection('problem');
-      } else if (e.key === '2') {
-        scrollToSection('engine');
-      } else if (e.key === '3') {
-        scrollToSection('simulator');
-      } else if (e.key === '4') {
-        scrollToSection('verification');
-      } else if (e.key === '5') {
-        scrollToSection('risk');
-      } else if (e.key === '6') {
-        scrollToSection('india');
-      } else if (e.key === '7') {
-        scrollToSection('scale');
-      } else if (e.key.toLowerCase() === 'p') {
-        enterPresentationMode(activeSection);
+      const currentIndex = SECTION_IDS.indexOf(activeSection);
+      if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+        if (currentIndex < SECTION_IDS.length - 1) {
+          e.preventDefault();
+          scrollToSection(SECTION_IDS[currentIndex + 1]);
+        }
+      } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+        if (currentIndex > 0) {
+          e.preventDefault();
+          scrollToSection(SECTION_IDS[currentIndex - 1]);
+        }
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isPresentationMode, activeSection, enterPresentationMode]);
+  }, [activeSection, isPresentationMode]);
 
-  // Track active section on scroll in Exploration Mode
+  // Track active section via IntersectionObserver
   useEffect(() => {
-    if (isPresentationMode) return;
-
-    const sectionIds = [
-      'intro',
-      'problem',
-      'insight',
-      'engine',
-      'simulator',
-      'waterfall',
-      'charter',
-      'verification',
-      'feet',
-      'risk',
-      'india',
-      'ecosystem',
-      'scale',
-      'aha-cta',
-    ];
-
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + 250;
-      for (const id of sectionIds) {
-        const el = document.getElementById(id);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSection(id);
-            break;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (isAutoScrolling.current) return;
+        
+        // Find the most visible section
+        let mostVisible = entries[0];
+        for (const entry of entries) {
+          if (entry.intersectionRatio > mostVisible.intersectionRatio) {
+            mostVisible = entry;
           }
         }
+        
+        if (mostVisible && mostVisible.isIntersecting) {
+          setActiveSection(mostVisible.target.id);
+        }
+      },
+      {
+        root: null,
+        rootMargin: '-10% 0px -40% 0px',
+        threshold: [0, 0.25, 0.5, 0.75, 1],
       }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isPresentationMode]);
-
-  // -------------------------------------------------------------
-  // MODE A: PRESENTATION MODE (16:9 Presentation Stage, Zero Scrolling)
-  // -------------------------------------------------------------
-  if (isPresentationMode) {
-    return (
-      <>
-        <PresentationStage onOpenSources={() => openSource()} />
-        <SourceDrawer />
-      </>
     );
-  }
 
-  // -------------------------------------------------------------
-  // MODE B: EXPLORATION MODE (Normal Interactive Scrolling Website)
-  // -------------------------------------------------------------
+    SECTION_IDS.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="min-h-screen bg-[#020617] text-[#E2E8F0] selection:bg-[#00F2FF]/30 antialiased font-sans relative">
+    <div className={`min-h-screen bg-[#020617] text-[#E2E8F0] selection:bg-[#00F2FF]/30 antialiased font-sans relative ${isPresentationMode ? 'presentation-mode-active' : ''}`}>
       {/* Ambient Technical Data Grid Matrix Background */}
       <div className="fixed inset-0 tech-grid-bg opacity-30 pointer-events-none z-0" />
       
-      {/* Top Floating Navigation */}
-      <Navbar
+      {/* Left Navigation Scrubber */}
+      <VerticalScrubber 
         activeSection={activeSection}
         onNavigate={scrollToSection}
-        isPresentationMode={false}
-        onTogglePresentationMode={() => enterPresentationMode(activeSection)}
-        onOpenSources={() => openSource()}
+        isPresentationMode={isPresentationMode}
+        onExitPresentationMode={() => setIsPresentationMode(false)}
       />
+      
+      {/* Top Floating Navigation */}
+      {!isPresentationMode && (
+        <Navbar
+          activeSection={activeSection}
+          onNavigate={scrollToSection}
+          isPresentationMode={isPresentationMode}
+          onTogglePresentationMode={() => setIsPresentationMode(true)}
+          onOpenSources={() => openSource()}
+        />
+      )}
 
       {/* Main Experience Flow */}
-      <main className="relative z-10">
+      <main className="relative z-10 transition-all duration-300 ml-12">
         
         {/* Section 00: Cinematic Intro */}
         <div id="intro">
@@ -217,81 +232,75 @@ function MainAppContent() {
           onRestart={() => scrollToSection('intro')}
           onOpenSources={() => openSource()}
         />
+
+        {/* Section 13: Final QR & Call to Action */}
+        <div id="scan-qr">
+          <FinalQRPage />
+        </div>
       </main>
 
       {/* Slide-out Research Sources Drawer */}
       <SourceDrawer />
 
       {/* Technical Data Grid Telemetry Footer */}
-      <footer className="relative z-10 border-t border-white/10 bg-[#020617]/95 backdrop-blur-md py-6 px-4 sm:px-8 text-[11px] font-mono tracking-wider text-white/50">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex flex-wrap items-center gap-6">
-            <div className="flex items-center gap-2">
-              <div className="w-2.5 h-2.5 border border-[#00F2FF] rotate-45 flex items-center justify-center">
-                <div className="w-1 h-1 bg-[#00F2FF]"></div>
+      {activeSection !== 'scan-qr' && (
+        <footer className="relative z-10 border-t border-white/10 bg-[#020617]/95 backdrop-blur-md py-6 px-4 sm:px-8 text-[11px] font-mono tracking-wider text-white/50 transition-all duration-300 ml-12">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex flex-wrap items-center gap-6">
+              <div className="flex items-center gap-2">
+                <div className="w-2.5 h-2.5 border border-[#00F2FF] rotate-45 flex items-center justify-center">
+                  <div className="w-1 h-1 bg-[#00F2FF]"></div>
+                </div>
+                <span className="text-white font-bold tracking-tight">SHIPLOOP</span>
+                <span className="text-[#00F2FF] text-[10px]">STAGE_v2.0_LIVE</span>
               </div>
-              <span className="text-white font-bold tracking-tight">SHIPLOOP</span>
-              <span className="text-[#00F2FF] text-[10px]">STAGE_v2.0_LIVE</span>
-            </div>
-            <div className="hidden lg:flex items-center gap-2 border-l border-white/10 pl-6">
-              <span className="text-white/40">INDIA_MARITIME_OPS:</span>
-              <span className="text-white/80 font-bold">JNPT_MUMBAI / CSL_COCHIN</span>
-            </div>
-            <div className="flex items-center gap-2 border-l border-white/10 pl-4 sm:pl-6">
-              <span className="text-white/40">FEED_STATUS:</span>
-              <span className="text-emerald-400 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                LIVE_SENSORS
-              </span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-6">
-            <div className="hidden sm:flex items-center gap-3">
-              <span className="text-[#FFB347] text-[10px] tracking-widest">GLOBAL_SIGNAL: FEET_RESEARCH</span>
-              <div className="w-20 h-2 bg-white/10 border border-white/20 overflow-hidden">
-                <div className="h-full bg-[#00F2FF] w-3/4"></div>
+              <div className="hidden lg:flex items-center gap-2 border-l border-white/10 pl-6">
+                <span className="text-white/40">INDIA_MARITIME_OPS:</span>
+                <span className="text-white/80 font-bold">JNPT_MUMBAI / CSL_COCHIN</span>
+              </div>
+              <div className="flex items-center gap-2 border-l border-white/10 pl-4 sm:pl-6">
+                <span className="text-white/40">FEED_STATUS:</span>
+                <span className="text-emerald-400 flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  LIVE_SENSORS
+                </span>
               </div>
             </div>
 
-            <div className="flex items-center gap-4 text-white/60">
-              <button 
-                onClick={() => openSource()}
-                className="hover:text-[#00F2FF] transition-colors uppercase tracking-widest text-[10px] cursor-pointer"
-              >
-                [SOURCES]
-              </button>
-              <button 
-                onClick={() => enterPresentationMode(activeSection)}
-                className="hover:text-[#00F2FF] text-[#00F2FF] font-bold transition-colors uppercase tracking-widest text-[10px] cursor-pointer"
-              >
-                [PRESENTATION_MODE]
-              </button>
+            <div className="flex items-center gap-6">
+              <div className="hidden sm:flex items-center gap-3">
+                <span className="text-[#FFB347] text-[10px] tracking-widest">GLOBAL_SIGNAL: FEET_RESEARCH</span>
+                <div className="w-20 h-2 bg-white/10 border border-white/20 overflow-hidden">
+                  <div className="h-full bg-[#00F2FF] w-3/4"></div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4 text-white/60">
+                <button 
+                  onClick={() => openSource()}
+                  className="hover:text-[#00F2FF] transition-colors uppercase tracking-widest text-[10px] cursor-pointer"
+                >
+                  [SOURCES]
+                </button>
+                <button 
+                  onClick={() => setIsPresentationMode(prev => !prev)}
+                  className="hover:text-[#00F2FF] text-[#00F2FF] font-bold transition-colors uppercase tracking-widest text-[10px] cursor-pointer"
+                >
+                  [{isPresentationMode ? 'EXIT_PRESENTATION' : 'PRESENTATION_MODE'}]
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </footer>
-
+        </footer>
+      )}
     </div>
   );
 }
 
 export default function App() {
-  const handleExitToExplore = (sectionId: string) => {
-    // Smoothly scroll to the corresponding section when returning from Presentation Mode
-    setTimeout(() => {
-      const el = document.getElementById(sectionId);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 50);
-  };
-
   return (
     <EvidenceProvider>
-      <PresentationProvider onExitToExplore={handleExitToExplore}>
-        <MainAppContent />
-      </PresentationProvider>
+      <MainAppContent />
     </EvidenceProvider>
   );
 }

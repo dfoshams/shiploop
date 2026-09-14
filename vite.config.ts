@@ -5,9 +5,8 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
-  base: '/shiploop/',
-  plugins: [react(), tailwindcss()],
-  resolve: {
+    plugins: [react(), tailwindcss()],
+    resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
       },

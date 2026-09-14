@@ -421,19 +421,18 @@ export const CinematicIntro: React.FC<CinematicIntroProps> = ({
         id="shiploop-gate-screen"
         className="relative min-h-screen w-full flex flex-col items-center justify-center bg-[#010409] text-white select-none overflow-hidden px-4"
       >
-        {/* Subtle background radar & deep ocean grid */}
-        <div className="absolute inset-0 pointer-events-none opacity-20">
-          <div className="absolute inset-0 bg-[radial-gradient(#00F2FF_1px,transparent_1px)] [background-size:40px_40px]" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full border border-cyan-500/10" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] rounded-full border border-cyan-500/20 animate-[spin_60s_linear_infinite]" />
+        {/* Subtle background radar & deep ocean grid (Restored Original) */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,242,255,0.08)_0%,transparent_60%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(#00F2FF_1px,transparent_1px)] [background-size:40px_40px] opacity-20" />
         </div>
 
-        {/* Minimal Gate Content */}
+        {/* Minimal Gate Content (Restored Original Layout) */}
         <div className="relative z-10 max-w-2xl text-center space-y-8 animate-fadeIn">
           
-          {/* Technical Brand Diamond Logo */}
+          {/* Technical Brand Diamond Logo (Restored Original) */}
           <div className="flex items-center justify-center mb-2">
-            <div className="relative flex items-center justify-center w-14 h-14 border border-[#00F2FF] rotate-45 shadow-[0_0_30px_rgba(0,242,255,0.4)]">
+            <div className="relative flex items-center justify-center w-14 h-14 border border-[#00F2FF] rotate-45 shadow-[0_0_30px_rgba(0,242,255,0.2)]">
               <div className="w-6 h-6 bg-[#00F2FF] -rotate-45 flex items-center justify-center">
                 <span className="w-1.5 h-1.5 bg-black rounded-full" />
               </div>
@@ -441,22 +440,22 @@ export const CinematicIntro: React.FC<CinematicIntroProps> = ({
             </div>
           </div>
 
-          {/* Title */}
+          {/* Title with Subtle Breathing Color */}
           <div className="space-y-3">
-            <h1 className="text-5xl sm:text-7xl font-black tracking-tight font-mono text-white">
-              SHIP<span className="text-[#00F2FF]">LOOP</span>
+            <h1 className="text-5xl sm:text-7xl font-black tracking-tight font-mono text-white animate-titleBreathing transition-colors duration-1000">
+              SHIPLOOP
             </h1>
-            <p className="text-xs sm:text-sm font-mono tracking-[0.3em] uppercase text-[#00F2FF]/80">
+            <p className="text-xs sm:text-sm font-mono tracking-[0.3em] uppercase text-[#00F2FF]/80 drop-shadow-[0_0_8px_rgba(0,242,255,0.3)]">
               MARITIME ENERGY × FINANCE × VERIFIED SAVINGS
             </p>
           </div>
 
-          {/* Subtitle context for presentation */}
-          <p className="text-sm sm:text-base text-slate-400 font-sans max-w-lg mx-auto font-light leading-relaxed">
+          {/* Subtitle context for presentation (Slightly more readable) */}
+          <p className="text-base sm:text-lg text-slate-300 font-sans max-w-lg mx-auto font-light leading-relaxed">
             A savings-linked financial architecture turning future verified maritime fuel reductions into today's retrofit capital.
           </p>
 
-          {/* Primary Action Button */}
+          {/* Primary Action Button (Restored Original) */}
           <div className="pt-4 flex flex-col items-center gap-4">
             <button
               id="btn-enter-the-voyage"
@@ -467,7 +466,7 @@ export const CinematicIntro: React.FC<CinematicIntroProps> = ({
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </button>
 
-            {/* Direct bypass / shortcut for quick navigation */}
+            {/* Direct bypass / shortcut for quick navigation (Restored Original) */}
             <div className="flex items-center gap-6 pt-3 text-[11px] font-mono text-slate-500">
               <button 
                 onClick={handleSkip}
@@ -484,10 +483,9 @@ export const CinematicIntro: React.FC<CinematicIntroProps> = ({
               </button>
             </div>
           </div>
-
         </div>
 
-        {/* Bottom subtle note */}
+        {/* Bottom subtle note (Restored Original Style) */}
         <div 
           id="gate-prototype-badge"
           className="absolute bottom-6 left-0 right-0 text-center text-[10px] font-mono text-slate-600 tracking-widest uppercase"
