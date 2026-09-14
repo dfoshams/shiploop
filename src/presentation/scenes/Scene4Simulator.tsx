@@ -130,7 +130,7 @@ export const Scene4Simulator: React.FC = () => {
               <span className="text-xl text-[#FFB347]">Cr</span>
             </div>
             <div className="text-xs text-white/50 mt-1">
-              6 yrs @ 8.5% p.a. senior debt
+              {simResult.finalTenureMonths} mo @ {(simParams.interestRateAnnualPercent ?? 0) > 0 ? `${simParams.interestRateAnnualPercent}% p.a.` : '0.0% p.a. (Zero-Interest)'}
             </div>
           </div>
 
@@ -205,32 +205,32 @@ export const Scene4Simulator: React.FC = () => {
             />
             <div className="flex justify-between text-[9px] text-white/30">
               <span>5% (Conservative)</span>
-              <span>15% (Base)</span>
-              <span>30% (Aggressive)</span>
+              <span>7.5% (Base)</span>
+              <span>20% (Aggressive)</span>
             </div>
           </div>
 
           {/* Slider 2: Bunker Fuel Price */}
           <div className="space-y-1.5">
             <div className="flex justify-between text-xs">
-              <span className="text-white/70">Bunker Fuel Price / MT:</span>
+              <span className="text-white/70">Bunker Fuel Price (VLSFO):</span>
               <span className="text-[#FFB347] font-bold text-sm">
-                ₹{simParams.fuelPricePerTonneINR.toLocaleString()}
+                ₹{simParams.fuelPricePerTonneINR.toLocaleString()} / MT
               </span>
             </div>
             <input
               type="range"
               min={30000}
-              max={75000}
-              step={1000}
+              max={85000}
+              step={500}
               value={simParams.fuelPricePerTonneINR}
               onChange={(e) => handleFuelPriceChange(parseInt(e.target.value))}
               className="w-full accent-[#FFB347] h-1.5 bg-white/10 rounded-none cursor-pointer"
             />
             <div className="flex justify-between text-[9px] text-white/30">
               <span>₹30k (Crashed)</span>
-              <span>₹50k (Current VLSFO)</span>
-              <span>₹75k (High Peak)</span>
+              <span>₹67.5k (VLSFO Base)</span>
+              <span>₹85k (High Peak)</span>
             </div>
           </div>
 
@@ -245,7 +245,7 @@ export const Scene4Simulator: React.FC = () => {
             <input
               type="range"
               min={5.0}
-              max={25.0}
+              max={50.0}
               step={0.5}
               value={simParams.retrofitCostINR}
               onChange={(e) => handleRetrofitCostChange(parseFloat(e.target.value))}
@@ -253,8 +253,8 @@ export const Scene4Simulator: React.FC = () => {
             />
             <div className="flex justify-between text-[9px] text-white/30">
               <span>₹5.0 Cr (Feeder)</span>
-              <span>₹10.0 Cr (Panamax)</span>
-              <span>₹25.0 Cr (VLCC)</span>
+              <span>₹30.0 Cr (Panamax)</span>
+              <span>₹50.0 Cr (VLCC)</span>
             </div>
           </div>
 

@@ -22,8 +22,20 @@ export function runStressTest(
   const stressedFuelSavedTonnes = stressedFuelConsumption * effectiveTechEfficiency;
   
   // Gross stressed savings (₹ Crores)
-  const stressedAnnualSavingsINR = Number(
+  const grossStressedAnnualSavingsINR = Number(
     ((stressedFuelSavedTonnes * stressedFuelPrice) / 10000000).toFixed(2)
+  );
+
+  // Contractual charter component deducted (Time Charter / Bareboat)
+  let stressedCharterDeductionINR = 0;
+  if (baseParams.charterType === 'TIME_CHARTER' || baseParams.charterType === 'BAREBOAT') {
+    const chartererShare = (baseParams.chartererSavingsSharePercent ?? 50) / 100;
+    stressedCharterDeductionINR = grossStressedAnnualSavingsINR * chartererShare;
+  }
+
+  // Available verified stressed savings supporting debt service
+  const stressedAnnualSavingsINR = Number(
+    Math.max(0, grossStressedAnnualSavingsINR - stressedCharterDeductionINR).toFixed(2)
   );
 
   // DSCR calculation

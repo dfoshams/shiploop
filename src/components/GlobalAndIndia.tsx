@@ -29,6 +29,7 @@ import { IndiaDeploymentScenario } from './india/IndiaDeploymentScenario';
 import { InstitutionalResponsibilityMap } from './india/InstitutionalResponsibilityMap';
 import { RiskProtectionsPanel } from './india/RiskProtectionsPanel';
 import { IndiaDeploymentPhases } from './india/IndiaDeploymentPhases';
+import { IndiaFinancingEnablers } from './india/IndiaFinancingEnablers';
 
 interface GlobalAndIndiaProps {
   isPresentationMode?: boolean;
@@ -227,6 +228,13 @@ export const GlobalAndIndia: React.FC<GlobalAndIndiaProps> = ({
             </span>
           </div>
           <IndianPolicyLayer />
+        </div>
+
+        {/* ==================================================================== */}
+        {/* 3.5 WHY THIS CAN BECOME BANKABLE IN INDIA (Financing Enablers)      */}
+        {/* ==================================================================== */}
+        <div className="space-y-3">
+          <IndiaFinancingEnablers />
         </div>
 
         {/* ==================================================================== */}

@@ -9,13 +9,37 @@ export const Scene5Waterfall: React.FC = () => {
   const debt = simResult.annualRepaymentINR;
   const admin = simResult.verificationAndAdminFeeINR;
   const surplus = Math.max(0, gross - debt - admin);
-  const charterer = surplus * 0.5;
-  const owner = surplus * 0.5;
+  
+  const hasChartererShare = simResult.charterType === 'TIME_CHARTER' || simResult.charterType === 'BAREBOAT';
+  const charterer = hasChartererShare ? simResult.chartererRetainedINR : 0;
+  const owner = hasChartererShare 
+    ? Math.max(0, simResult.ownerBaseTermAnnualSurplusINR) 
+    : Math.max(0, surplus);
 
   const debtPct = gross > 0 ? ((debt / gross) * 100).toFixed(1) : '29.1';
   const adminPct = gross > 0 ? ((admin / gross) * 100).toFixed(1) : '4.0';
-  const chartererPct = gross > 0 ? ((charterer / gross) * 100).toFixed(1) : '33.5';
-  const ownerPct = gross > 0 ? ((owner / gross) * 100).toFixed(1) : '33.5';
+  const chartererPct = gross > 0 ? ((charterer / gross) * 100).toFixed(1) : '0.0';
+  const ownerPct = gross > 0 ? ((owner / gross) * 100).toFixed(1) : '66.9';
+
+  const chartererTitle = simResult.charterType === 'BAREBOAT' 
+    ? 'BAREBOAT CHARTERER' 
+    : simResult.charterType === 'TIME_CHARTER' 
+    ? 'TIME CHARTERER' 
+    : simResult.charterType === 'COA'
+    ? 'COA CARGO CHARTERER'
+    : 'VOYAGE CHARTERER';
+
+  const chartererBadge = hasChartererShare 
+    ? 'OPEX DISCOUNT' 
+    : 'NO DEDUCTION (OWNER OPERATED)';
+
+  const chartererLabel = simResult.charterType === 'BAREBOAT'
+    ? 'Bareboat Green Rider Retention'
+    : simResult.charterType === 'TIME_CHARTER'
+    ? 'BIMCO Green Gain-Share'
+    : simResult.charterType === 'COA'
+    ? '0% Deducted (Freight Clause)'
+    : '0% Deducted (Direct Bunker)';
 
   const streams = [
     {
@@ -40,11 +64,11 @@ export const Scene5Waterfall: React.FC = () => {
     },
     {
       num: '03',
-      recipient: 'TIME CHARTERER',
-      label: 'Immediate Bunker Savings',
+      recipient: chartererTitle,
+      label: chartererLabel,
       amount: `₹${charterer.toFixed(2)} Cr`,
       percent: `${chartererPct}%`,
-      badge: 'OPEX DISCOUNT',
+      badge: chartererBadge,
       icon: Users,
       color: 'border-emerald-400/40 text-emerald-400 bg-emerald-950/10',
     },

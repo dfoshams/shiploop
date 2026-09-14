@@ -1,12 +1,14 @@
 import React from 'react';
 import { DollarSign, AlertTriangle, Lock, ArrowRight, Flame } from 'lucide-react';
+import { DEMO_DATA } from '../../data/demoData';
 
 export const Scene1Problem: React.FC = () => {
+  const annualFuelSpendCr = ((DEMO_DATA.defaultSimulationParams.annualFuelConsumption * DEMO_DATA.defaultSimulationParams.fuelPricePerTonneINR) / DEMO_DATA.constants.inrCroreToUnits).toFixed(1);
   const barriers = [
     {
       num: '01',
-      metric: '₹8 – 20 Cr',
-      metricSecondary: '($1.0M – $2.4M USD)',
+      metric: '₹8 – 30 Cr',
+      metricSecondary: '($0.84M – $3.14M USD)',
       label: 'UPFRONT CAPEX',
       subtitle: 'Balance Sheet Gridlock',
       desc: 'Discretionary retrofits require heavy liquid capital that volatile freight cycles cannot spare.',
@@ -104,7 +106,7 @@ export const Scene1Problem: React.FC = () => {
           <span className="text-[#FFB347] font-bold uppercase">CONVENTIONAL CYCLE:</span>
           <span>10,000 MT Fuel Burned</span>
           <ArrowRight className="w-3.5 h-3.5 text-white/40" />
-          <span className="text-rose-400 font-bold">₹50 Cr Burned Cashflow</span>
+          <span className="text-rose-400 font-bold">₹{annualFuelSpendCr} Cr Burned Cashflow</span>
           <ArrowRight className="w-3.5 h-3.5 text-white/40" />
           <span className="text-white/40">Zero Asset Improvement</span>
         </div>

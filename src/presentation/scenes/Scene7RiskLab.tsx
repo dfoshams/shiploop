@@ -1,22 +1,41 @@
 import React, { useState } from 'react';
 import { AlertTriangle, ShieldCheck, TrendingDown, Clock, ShieldAlert, CheckCircle2 } from 'lucide-react';
+import { DEMO_DATA } from '../../data/demoData';
+import { runStressTest } from '../../logic/riskModel';
 
 export const Scene7RiskLab: React.FC = () => {
   const [selectedStress, setSelectedStress] = useState<'CRASH' | 'UNDERPERFORM' | 'IDLE'>('CRASH');
+
+  const baseFuelPrice = DEMO_DATA.defaultSimulationParams.fuelPricePerTonneINR;
+  const stressedFuelPrice = Math.round(baseFuelPrice * 0.7);
+
+  const crashStress = runStressTest(DEMO_DATA.defaultSimulationParams, {
+    fuelPriceShockPercent: -30,
+    technologyPerformanceFactor: 100,
+    vesselUtilizationPercent: 100,
+    charterRevenueShockPercent: 0,
+  });
+
+  const underperformStress = runStressTest(DEMO_DATA.defaultSimulationParams, {
+    fuelPriceShockPercent: 0,
+    technologyPerformanceFactor: 60,
+    vesselUtilizationPercent: 100,
+    charterRevenueShockPercent: 0,
+  });
 
   const stresses = {
     CRASH: {
       title: 'BUNKER PRICE COLLAPSE',
       shock: '-30% Bunker Price',
-      impact: 'Fuel drops from ₹50,000 to ₹35,000/t. Gross monetary savings contract to ₹5.25 Cr.',
-      defense: 'DSCR remains 2.41x (comfortably above 1.30x requirement). 100% debt service met with no drawdown.',
+      impact: `Fuel drops from ₹${baseFuelPrice.toLocaleString()} to ₹${stressedFuelPrice.toLocaleString()}/MT (-30%). Gross monetary savings adjust to ₹${crashStress.stressedAnnualSavingsINR.toFixed(2)} Cr.`,
+      defense: `DSCR calculates at ${crashStress.stressedDSCR.toFixed(2)}x. Liquidity buffer and reserve mechanisms safeguard solvency.`,
       status: 'SYSTEM SOLVENT',
     },
     UNDERPERFORM: {
       title: 'TECH UNDERPERFORMANCE',
       shock: '40% Hydrodynamic Deficit',
-      impact: 'Rough seas or marine fouling reduce net efficiency from 15% to 9%.',
-      defense: 'Annual savings ₹4.50 Cr still yields 2.06x DSCR coverage. Senior lenders experience zero loss.',
+      impact: 'Rough seas or marine fouling reduce net efficiency from 7.5% to 4.5%.',
+      defense: `Annual savings of ₹${underperformStress.stressedAnnualSavingsINR.toFixed(2)} Cr stress-tested under structured mitigation.`,
       status: 'SYSTEM RESILIENT',
     },
     IDLE: {

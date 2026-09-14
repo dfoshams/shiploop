@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { SimulationParams, RiskStressParams } from '../types';
 import { runStressTest } from '../logic/riskModel';
+import { SourceButton } from './SourceButton';
 
 interface RiskLabProps {
   params: SimulationParams;
@@ -167,6 +168,7 @@ export const RiskLab: React.FC<RiskLabProps> = ({
                 <span className="text-white/70 flex items-center gap-1.5">
                   <Zap className="w-3.5 h-3.5 text-[#00F2FF]" />
                   Technology Performance Factor
+                  <SourceButton evidenceId="TECH-001" />
                 </span>
                 <span className={`font-bold ${stressParams.technologyPerformanceFactor < 80 ? 'text-rose-400' : 'text-[#00F2FF]'}`}>
                   {stressParams.technologyPerformanceFactor}% of Target
@@ -195,6 +197,7 @@ export const RiskLab: React.FC<RiskLabProps> = ({
                 <span className="text-white/70 flex items-center gap-1.5">
                   <DollarSign className="w-3.5 h-3.5 text-[#FFB347]" />
                   Fuel Price Volatility Shock
+                  <SourceButton evidenceId="FUEL-001" />
                 </span>
                 <span className={`font-bold ${stressParams.fuelPriceShockPercent < 0 ? 'text-rose-400' : 'text-emerald-400'}`}>
                   {stressParams.fuelPriceShockPercent > 0 ? `+${stressParams.fuelPriceShockPercent}%` : `${stressParams.fuelPriceShockPercent}%`}
@@ -261,7 +264,10 @@ export const RiskLab: React.FC<RiskLabProps> = ({
                   ? 'border-[#FFB347]/40' 
                   : 'border-rose-500/60 ring-1 ring-rose-500/40'
               }`}>
-                <div className="text-[10px] font-mono text-white/40 uppercase tracking-wider">BANK_DSCR_COVERAGE</div>
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono text-white/40 uppercase tracking-wider">BANK_DSCR_COVERAGE</span>
+                  <SourceButton evidenceId="FIN-003" />
+                </div>
                 <div className={`text-2xl sm:text-3xl font-mono font-black mt-1 ${
                   stressResult.stressedDSCR >= 1.35 ? 'text-emerald-400' : stressResult.stressedDSCR >= 1.05 ? 'text-[#FFB347]' : 'text-rose-400'
                 }`}>
@@ -307,7 +313,10 @@ export const RiskLab: React.FC<RiskLabProps> = ({
             <div className="p-6 bg-white/[0.02] border border-white/10 shadow-2xl space-y-4 tech-corner-accent">
               
               <div className="flex items-center justify-between pb-3 border-b border-white/10 text-xs font-mono">
-                <span className="font-bold text-white uppercase tracking-wider">SHORTFALL MITIGATION PROTOCOL</span>
+                <div className="flex items-center gap-2">
+                  <span className="font-bold text-white uppercase tracking-wider">SHORTFALL MITIGATION PROTOCOL</span>
+                  <SourceButton evidenceId="FIN-003" />
+                </div>
                 <span className={`px-2.5 py-0.5 font-bold text-[10px] ${
                   stressResult.systemHealthStatus === 'OPTIMAL'
                     ? 'bg-emerald-950 text-emerald-300 border border-emerald-800'

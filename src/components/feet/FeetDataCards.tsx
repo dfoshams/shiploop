@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { ShieldCheck, Target, CheckCircle2, Info, Building, HelpCircle, Layers, ExternalLink } from 'lucide-react';
 import { FEET_DATA_RECORDS, FeetMetricRecord } from '../../data/feetData';
+import { SourceButton } from '../SourceButton';
 
 interface FeetDataCardsProps {
   onSelectRecord?: (record: FeetMetricRecord) => void;
@@ -114,9 +115,14 @@ export const FeetDataCards: React.FC<FeetDataCardsProps> = ({ onSelectRecord }) 
               <div>
                 {/* Header row: ID & Status Badges */}
                 <div className="flex flex-wrap items-center justify-between gap-1.5 mb-3">
-                  <span className="text-[10px] font-mono text-white/40 bg-white/5 px-1.5 py-0.5 rounded border border-white/10">
-                    {card.id}
-                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[10px] font-mono text-white/40 bg-white/5 px-1.5 py-0.5 rounded border border-white/10">
+                      {card.id}
+                    </span>
+                    <div onClick={(e) => e.stopPropagation()}>
+                      <SourceButton evidenceId="BENCHMARK-001" />
+                    </div>
+                  </div>
 
                   <div className="flex items-center gap-1">
                     {card.badges.map((b) => (

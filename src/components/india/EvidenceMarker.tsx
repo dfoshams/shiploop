@@ -1,10 +1,12 @@
 import React from 'react';
 import { ShieldCheck, HelpCircle, FileText, Sparkles, AlertCircle } from 'lucide-react';
+import { SourceButton } from '../SourceButton';
 
 export type EvidenceType = 'VERIFIED' | 'PROPOSED' | 'SIMULATION' | 'EVIDENCE_REQUIRED';
 
 interface EvidenceMarkerProps {
   id?: string;
+  evidenceId?: string;
   type?: EvidenceType;
   label?: string;
   source?: string;
@@ -14,6 +16,7 @@ interface EvidenceMarkerProps {
 
 export const EvidenceMarker: React.FC<EvidenceMarkerProps> = ({
   id,
+  evidenceId,
   type = 'PROPOSED',
   label,
   source,
@@ -58,13 +61,16 @@ export const EvidenceMarker: React.FC<EvidenceMarkerProps> = ({
   const Icon = config.icon;
 
   return (
-    <span
-      className={`${inline ? 'inline-flex' : 'flex'} items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-mono font-bold uppercase tracking-wider border transition-all cursor-help select-none ${config.color} ${className}`}
-      title={`${config.tooltip}${id ? ` [Ref ID: ${id}]` : ''}`}
-    >
-      <Icon className="w-2.5 h-2.5 flex-shrink-0" />
-      <span>{config.text}</span>
-      {id && <span className="text-white/40 text-[8px] pl-0.5 border-l border-white/20">#{id}</span>}
+    <span className="inline-flex items-center gap-1.5">
+      <span
+        className={`${inline ? 'inline-flex' : 'flex'} items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-mono font-bold uppercase tracking-wider border transition-all cursor-help select-none ${config.color} ${className}`}
+        title={`${config.tooltip}${id ? ` [Ref ID: ${id}]` : ''}`}
+      >
+        <Icon className="w-2.5 h-2.5 flex-shrink-0" />
+        <span>{config.text}</span>
+        {id && <span className="text-white/40 text-[8px] pl-0.5 border-l border-white/20">#{id}</span>}
+      </span>
+      {evidenceId && <SourceButton evidenceId={evidenceId} />}
     </span>
   );
 };

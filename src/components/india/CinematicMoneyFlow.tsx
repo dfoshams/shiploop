@@ -14,6 +14,11 @@ import {
   RotateCcw
 } from 'lucide-react';
 import { EvidenceMarker } from './EvidenceMarker';
+import { DEMO_DATA } from '../../data/demoData';
+import { calculateSimulation } from '../../logic/financialModel';
+
+const moneyFlowSim = calculateSimulation(DEMO_DATA.defaultSimulationParams);
+const defaultParams = DEMO_DATA.defaultSimulationParams;
 
 interface CinematicMoneyFlowProps {
   isPresentationMode?: boolean;
@@ -35,7 +40,7 @@ export const CinematicMoneyFlow: React.FC<CinematicMoneyFlowProps> = ({
       step: 1,
       tag: 'CAPEX INJECTION',
       title: '₹ RETROFIT FINANCING',
-      amount: '₹10.0 Cr',
+      amount: `₹${defaultParams.retrofitCostINR.toFixed(1)} Cr`,
       subtext: '100% financed by Green Finance Window via SPV',
       color: '#00F2FF',
       icon: Coins,
@@ -45,7 +50,7 @@ export const CinematicMoneyFlow: React.FC<CinematicMoneyFlowProps> = ({
       tag: 'DRYDOCK INTEGRATION',
       title: 'RETROFIT INSTALLED',
       amount: 'Cochin Shipyard (CSL)',
-      subtext: 'Air lubrication or rotor sails installed in 14-day drydock',
+      subtext: '4 Medium Flettner Rotor sails installed in scheduled drydock',
       color: '#38BDF8',
       icon: Wrench,
     },
@@ -53,8 +58,8 @@ export const CinematicMoneyFlow: React.FC<CinematicMoneyFlowProps> = ({
       step: 3,
       tag: 'OPERATIONAL GAIN',
       title: 'FUEL CONSUMPTION FALLS',
-      amount: '-1,500 MT / yr',
-      subtext: 'VLSFO consumption drops 15% across sailing days',
+      amount: `-${moneyFlowSim.annualFuelSavedTonnes.toLocaleString()} MT / yr`,
+      subtext: `VLSFO consumption drops ${defaultParams.efficiencyImprovementPercent.toFixed(1)}% across sailing days`,
       color: '#F97316',
       icon: TrendingDown,
     },
@@ -62,7 +67,7 @@ export const CinematicMoneyFlow: React.FC<CinematicMoneyFlowProps> = ({
       step: 4,
       tag: 'GROSS CASHFLOW',
       title: '₹ OPERATING SAVINGS',
-      amount: '₹7.50 Cr / yr',
+      amount: `₹${moneyFlowSim.grossAnnualSavingsINR.toFixed(2)} Cr / yr`,
       subtext: 'Fuel expenditure saved based on prevailing bunker prices',
       color: '#10B981',
       icon: Coins,
@@ -80,7 +85,7 @@ export const CinematicMoneyFlow: React.FC<CinematicMoneyFlowProps> = ({
       step: 6,
       tag: 'SENIOR DEBT SERVICE',
       title: 'BANK REPAYMENT',
-      amount: '₹2.18 Cr / yr',
+      amount: `₹${moneyFlowSim.annualRepaymentINR.toFixed(2)} Cr / yr`,
       subtext: 'Priority automated sweep from dedicated escrow account',
       color: '#38BDF8',
       icon: Building2,
@@ -89,8 +94,8 @@ export const CinematicMoneyFlow: React.FC<CinematicMoneyFlowProps> = ({
       step: 7,
       tag: 'OWNER DIVIDEND',
       title: 'OWNER RESIDUAL SAVINGS',
-      amount: '+₹5.02 Cr / yr',
-      subtext: 'Free cashflow retained by owner, expanding to 100% post-payback',
+      amount: `₹${moneyFlowSim.grossAnnualSavingsINR.toFixed(2)} Cr / yr`,
+      subtext: 'Verified savings service senior debt with remaining value retained by owner',
       color: '#A855F7',
       icon: Sparkles,
     },

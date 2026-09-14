@@ -13,6 +13,12 @@ import {
   Sparkles,
   Info
 } from 'lucide-react';
+import { DEMO_DATA } from '../data/demoData';
+import { calculateSimulation } from '../logic/financialModel';
+import { SourceButton } from './SourceButton';
+
+const baseSim = calculateSimulation(DEMO_DATA.defaultSimulationParams);
+const defaultParams = DEMO_DATA.defaultSimulationParams;
 
 interface LoopEngineProps {
   isPresentationMode?: boolean;
@@ -36,32 +42,36 @@ export const LoopEngine: React.FC<LoopEngineProps> = ({
       title: 'Green Capital Origination',
       desc: 'Institutional lender or green SPV provisions 100% of retrofit CAPEX directly into shipyard escrow.',
       actor: 'BANK / GREEN SPV',
-      capitalFlow: '₹10.0 Cr Outflow → Shipyard',
+      capitalFlow: `₹${defaultParams.retrofitCostINR.toFixed(1)} Cr Outflow → Shipyard`,
       icon: Building2,
       color: 'border-cyan-500 text-cyan-400 bg-cyan-950/40',
       badge: 'Zero Owner Equity',
+      evidenceId: 'FEET-001',
+      isProposal: true,
     },
     {
       id: 2,
       name: '02 RETROFIT',
       title: 'Yard Drydock Installation',
-      desc: 'Selected hydrodynamics (Air Lubrication, PBCF, Rotor Sails) installed during scheduled special survey.',
+      desc: 'Selected hydrodynamics (Flettner Rotor Sails - 4 Medium Rotors) installed during scheduled special survey.',
       actor: 'CERTIFIED SHIPYARD',
       capitalFlow: 'Hardware Commissioned',
       icon: Wrench,
       color: 'border-blue-500 text-blue-400 bg-blue-950/40',
       badge: 'TRL-9 Proven Tech',
+      evidenceId: 'TECH-001',
     },
     {
       id: 3,
       name: '03 SAVE',
       title: 'Real-World Fuel Reduction',
-      desc: 'Vessel re-enters commercial service; hydrodynamic friction drops and fuel burn decreases by 15.0%.',
+      desc: `Vessel re-enters commercial service; wind propulsion engages and fuel burn decreases by ${defaultParams.efficiencyImprovementPercent.toFixed(1)}%.`,
       actor: 'COMMERCIAL VESSEL AT SEA',
-      capitalFlow: '1,500 Tonnes Bunker Unburned',
+      capitalFlow: `${baseSim.annualFuelSavedTonnes.toLocaleString()} Tonnes Bunker Unburned`,
       icon: Fuel,
       color: 'border-teal-500 text-teal-400 bg-teal-950/40',
       badge: 'Immediate Operational Impact',
+      evidenceId: 'TECH-001',
     },
     {
       id: 4,
@@ -73,6 +83,7 @@ export const LoopEngine: React.FC<LoopEngineProps> = ({
       icon: ShieldCheck,
       color: 'border-emerald-500 text-emerald-400 bg-emerald-950/40',
       badge: 'DNV / Bureau Veritas Oracle',
+      evidenceId: 'VERIFICATION-002',
     },
     {
       id: 5,
@@ -80,21 +91,24 @@ export const LoopEngine: React.FC<LoopEngineProps> = ({
       title: 'Programmed Debt Amortization',
       desc: 'Verified fuel savings monetized from operating cashflow to satisfy scheduled debt service annuity.',
       actor: 'SHIPLOOP SETTLEMENT SMART CONTRACT',
-      capitalFlow: '₹2.18 Cr / yr → Bank Account',
+      capitalFlow: `₹${baseSim.annualRepaymentINR.toFixed(2)} Cr / yr → Bank Account`,
       icon: Banknote,
       color: 'border-amber-500 text-amber-400 bg-amber-950/40',
       badge: 'Senior Secured Claim',
+      evidenceId: 'FIN-003',
+      isProposal: true,
     },
     {
       id: 6,
       name: '06 RETAIN',
       title: 'Owner Economic Surplus',
-      desc: 'Surplus savings above debt service and platform reserve are kept by the shipowner as free cashflow.',
+      desc: 'Verified fuel savings service senior debt with remaining value retained by the asset and charterer.',
       actor: 'SHIPOWNER / CHARTERER',
-      capitalFlow: '+₹5.02 Cr / yr Net Profit Surplus',
+      capitalFlow: `₹${baseSim.grossAnnualSavingsINR.toFixed(2)} Cr / yr Gross Savings Monitored`,
       icon: TrendingUp,
       color: 'border-emerald-400 text-emerald-300 bg-emerald-950/40',
       badge: 'Immediate Cash Positive',
+      evidenceId: 'CHARTER-003',
     },
   ];
 
@@ -229,14 +243,27 @@ export const LoopEngine: React.FC<LoopEngineProps> = ({
                       <Icon className="w-5 h-5 text-[#00F2FF]" />
                     </div>
                     <div>
-                      <span className="text-xs font-mono font-bold text-[#00F2FF] tracking-wider uppercase">
-                        {step.name}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-mono font-bold text-[#00F2FF] tracking-wider uppercase">
+                          {step.name}
+                        </span>
+                        {step.isProposal && (
+                          <span className="text-[9px] px-1 py-0.2 bg-white/5 border border-white/20 text-white/50 tracking-wider">
+                            PROPOSED
+                          </span>
+                        )}
+                      </div>
                       <h3 className="text-base font-mono font-bold text-white leading-tight uppercase">
                         {step.title}
                       </h3>
                     </div>
                   </div>
+
+                  {step.evidenceId && (
+                    <div onClick={(e) => e.stopPropagation()}>
+                      <SourceButton evidenceId={step.evidenceId} />
+                    </div>
+                  )}
                 </div>
 
                 <p className="text-xs text-white/50 font-mono leading-relaxed mb-4">

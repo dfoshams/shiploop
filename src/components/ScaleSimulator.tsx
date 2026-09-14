@@ -11,6 +11,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { SimulationParams, SimulationResult } from '../types';
+import { SourceButton } from './SourceButton';
 
 interface ScaleSimulatorProps {
   baseParams: SimulationParams;
@@ -162,7 +163,10 @@ export const ScaleSimulator: React.FC<ScaleSimulatorProps> = ({
           {/* Card 1: Financed CAPEX */}
           <div className="p-6 bg-white/[0.02] border border-white/10 space-y-2 tech-corner-accent">
             <div className="flex items-center justify-between text-white/40">
-              <span className="text-[10px] font-mono font-bold uppercase tracking-wider">TOTAL RETROFIT CAPITAL</span>
+              <div className="flex items-center gap-1.5">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider">TOTAL RETROFIT CAPITAL</span>
+                <SourceButton evidenceId="FIN-001" />
+              </div>
               <DollarSign className="w-4 h-4 text-[#00F2FF]" />
             </div>
             <div className="text-3xl font-mono font-black text-white">
@@ -177,7 +181,10 @@ export const ScaleSimulator: React.FC<ScaleSimulatorProps> = ({
           {/* Card 2: Annual Fuel Savings */}
           <div className="p-6 bg-white/[0.02] border border-white/10 space-y-2 tech-corner-accent">
             <div className="flex items-center justify-between text-white/40">
-              <span className="text-[10px] font-mono font-bold uppercase tracking-wider">ANNUAL FUEL SAVINGS</span>
+              <div className="flex items-center gap-1.5">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider">ANNUAL FUEL SAVINGS</span>
+                <SourceButton evidenceId="TECH-001" />
+              </div>
               <Award className="w-4 h-4 text-emerald-400" />
             </div>
             <div className="text-3xl font-mono font-black text-emerald-400">
@@ -192,7 +199,10 @@ export const ScaleSimulator: React.FC<ScaleSimulatorProps> = ({
           {/* Card 3: Annual Debt Service Pool */}
           <div className="p-6 bg-white/[0.02] border border-white/10 space-y-2 tech-corner-accent">
             <div className="flex items-center justify-between text-white/40">
-              <span className="text-[10px] font-mono font-bold uppercase tracking-wider">BANK AMORTIZATION POOL</span>
+              <div className="flex items-center gap-1.5">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider">BANK AMORTIZATION POOL</span>
+                <SourceButton evidenceId="FIN-003" />
+              </div>
               <Building2 className="w-4 h-4 text-[#FFB347]" />
             </div>
             <div className="text-3xl font-mono font-black text-[#FFB347]">
@@ -200,14 +210,17 @@ export const ScaleSimulator: React.FC<ScaleSimulatorProps> = ({
               <span className="text-xs text-[#FFB347]/70 font-normal">Cr/yr</span>
             </div>
             <p className="text-xs text-white/60 font-mono">
-              Senior secured debt service returning ~{baseParams.interestRateAnnualPercent || 8.5}% blended yields.
+              Senior secured debt service with {baseResult.bankSharePercent}% savings distribution share.
             </p>
           </div>
 
           {/* Card 4: Environmental CO2 Reduction */}
           <div className="p-6 bg-white/[0.02] border border-white/10 space-y-2 tech-corner-accent">
             <div className="flex items-center justify-between text-white/40">
-              <span className="text-[10px] font-mono font-bold uppercase tracking-wider">ANNUAL CO₂e AVOIDED</span>
+              <div className="flex items-center gap-1.5">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider">ANNUAL CO₂e AVOIDED</span>
+                <SourceButton evidenceId="IMO-001" />
+              </div>
               <Leaf className="w-4 h-4 text-teal-400" />
             </div>
             <div className="text-3xl font-mono font-black text-teal-300">

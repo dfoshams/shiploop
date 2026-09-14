@@ -131,9 +131,12 @@ export const BankingModelPanel: React.FC = () => {
 
               {/* Verifier */}
               <div className="p-3 bg-white/[0.02] border border-white/10 rounded-sm space-y-1.5">
-                <div className="flex items-center gap-1.5 text-emerald-400 font-bold text-xs">
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>INDEPENDENT VERIFIER</span>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5 text-emerald-400 font-bold text-xs">
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    <span>INDEPENDENT VERIFIER</span>
+                  </div>
+                  <EvidenceMarker type="VERIFIED" inline={true} evidenceId="REGULATORY-001" />
                 </div>
                 <div className="text-[11px] text-white/70 space-y-1">
                   <div>• Establishes baseline</div>
@@ -242,7 +245,7 @@ export const BankingModelPanel: React.FC = () => {
                   OPERATIONAL FUEL SAVINGS
                 </div>
                 <div className="text-[10px] text-white/50">
-                  -15% daily bunker burn at sea
+                  -7.5% daily bunker burn at sea
                 </div>
               </div>
 
@@ -288,7 +291,7 @@ export const BankingModelPanel: React.FC = () => {
             <div className="p-3 bg-white/[0.02] border border-[#FFB347]/30 text-[11px] space-y-1.5">
               <div className="flex items-center justify-between">
                 <span className="text-white font-bold">6-MONTH DSRF ESCROW BUFFER</span>
-                <EvidenceMarker type="PROPOSED" label="PROPOSED STRUCTURAL OPTION" />
+                <EvidenceMarker type="PROPOSED" label="PROPOSED STRUCTURAL OPTION" evidenceId="FIN-003" />
               </div>
               <p className="text-white/60 font-normal leading-relaxed">
                 A 6-month Debt Service Reserve Fund (DSRF) or concessionary first-loss credit enhancement absorbs temporary bunker price drops or off-hire drydocking, shielding senior lenders from payment disruption.

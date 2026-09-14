@@ -49,7 +49,7 @@ export const FeetBenchmark: React.FC<FeetBenchmarkProps> = ({
 
   const presentationStepLabels = [
     '01 FEET INTRO',
-    '02 MECHANISM FLOW',
+    '02 FEET MECHANISM',
     '03 VERIFIED DATA',
     '04 PILOT & MARKET GAP',
     '05 STRATEGIC SHIFT',
@@ -322,10 +322,10 @@ export const FeetBenchmark: React.FC<FeetBenchmarkProps> = ({
           <FeetCinematicIntro />
         </div>
 
-        {/* 2. Visual 6-Step FEET Mechanism Flow */}
+        {/* 2. Original FEET Financing Mechanism (GCMD Blueprint) & 6-Step Protocol */}
         <div>
           <div className="text-xs font-mono text-white/50 mb-2 uppercase tracking-wider">
-            02 / CLOSED-LOOP PROGRAM STRUCTURE
+            02 / ORIGINAL FEET FINANCING MECHANISM (GCMD BLUEPRINT)
           </div>
           <FeetMechanismVisual />
         </div>

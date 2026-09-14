@@ -14,6 +14,7 @@ import {
   Sparkles,
   Info
 } from 'lucide-react';
+import { SourceButton } from './SourceButton';
 
 interface EcosystemNode {
   id: string;
@@ -23,6 +24,7 @@ interface EcosystemNode {
   incentive: string;
   icon: any;
   color: string;
+  evidenceId?: string;
 }
 
 export const EcosystemAndBusiness: React.FC = () => {
@@ -43,9 +45,10 @@ export const EcosystemAndBusiness: React.FC = () => {
       label: 'FINANCING BANK',
       role: 'Green Debt Provider / SPV Investor',
       valueProp: 'Senior secured asset claim backed by continuous cryptographic telemetry verification and 6-month DSRA escrow.',
-      incentive: 'Deploys green capital at 8.5–10% yields with strong ESG classification and high DSCR (2.5x–4.0x).',
+      incentive: 'Deploys green capital at attractive risk-adjusted yields with strong ESG classification and senior DSCR coverage (2.5x–4.0x).',
       icon: Building2,
       color: 'border-amber-500 text-amber-400',
+      evidenceId: 'FIN-003',
     },
     {
       id: 'tech',
@@ -55,6 +58,7 @@ export const EcosystemAndBusiness: React.FC = () => {
       incentive: 'Accelerates commercial adoption of Air Lubrication, Rotor Sails, PBCF, and advanced coatings.',
       icon: Wrench,
       color: 'border-blue-500 text-blue-400',
+      evidenceId: 'TECH-001',
     },
     {
       id: 'charterer',
@@ -64,6 +68,7 @@ export const EcosystemAndBusiness: React.FC = () => {
       incentive: 'Access to premium Tier-1 rated green tonnage at competitive charter day-rates.',
       icon: Users,
       color: 'border-emerald-500 text-emerald-400',
+      evidenceId: 'CHARTER-001',
     },
     {
       id: 'verifier',
@@ -73,6 +78,7 @@ export const EcosystemAndBusiness: React.FC = () => {
       incentive: 'Expands digital telemetry assurance services across decarbonizing merchant fleets.',
       icon: ShieldCheck,
       color: 'border-teal-500 text-teal-400',
+      evidenceId: 'REGULATORY-001',
     },
     {
       id: 'insurer',
@@ -108,6 +114,7 @@ export const EcosystemAndBusiness: React.FC = () => {
       type: 'Telemetry Platform Subscription',
       desc: 'Automated ISO 19030 performance diagnostics and CII compliance reporting.',
       status: 'VALIDATED BENCHMARK',
+      evidenceId: 'VERIFICATION-001',
     },
     {
       name: 'Technology Marketplace Fee',
@@ -159,7 +166,14 @@ export const EcosystemAndBusiness: React.FC = () => {
                     <div className="p-2 w-fit bg-[#020617] border border-white/10 mb-3">
                       <Icon className="w-5 h-5 text-[#00F2FF]" />
                     </div>
-                    <div className="text-xs font-mono font-bold text-white mb-0.5">{node.label}</div>
+                    <div className="flex items-center justify-between">
+                      <div className="text-xs font-mono font-bold text-white mb-0.5">{node.label}</div>
+                      {node.evidenceId && (
+                        <div onClick={(e) => e.stopPropagation()}>
+                          <SourceButton evidenceId={node.evidenceId} />
+                        </div>
+                      )}
+                    </div>
                     <div className="text-[10px] text-white/50 font-mono line-clamp-2">{node.role}</div>
                   </div>
                 );
@@ -177,7 +191,10 @@ export const EcosystemAndBusiness: React.FC = () => {
             <div className="lg:col-span-5 p-7 bg-white/[0.02] border border-[#00F2FF]/40 shadow-2xl space-y-4 tech-corner-accent">
               <div className="flex items-center justify-between pb-3 border-b border-white/10">
                 <div>
-                  <span className="text-[10px] font-mono text-[#00F2FF] uppercase font-bold tracking-wider">STAKEHOLDER DETAIL</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-mono text-[#00F2FF] uppercase font-bold tracking-wider">STAKEHOLDER DETAIL</span>
+                    {activeNode.evidenceId && <SourceButton evidenceId={activeNode.evidenceId} />}
+                  </div>
                   <h3 className="text-xl font-mono font-bold text-white mt-0.5 uppercase">{activeNode.label}</h3>
                 </div>
                 <div className="p-2.5 bg-[#020617] border border-[#00F2FF]/40">
@@ -230,6 +247,7 @@ export const EcosystemAndBusiness: React.FC = () => {
                   }`}>
                     {rev.status}
                   </span>
+                  {rev.evidenceId && <SourceButton evidenceId={rev.evidenceId} />}
                 </div>
 
                 <div className="text-2xl font-mono font-black text-white mt-1">

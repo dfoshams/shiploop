@@ -1,4 +1,9 @@
 import { SceneDefinition, PresetValues, PresenterPreset } from './types';
+import { DEMO_DATA } from '../data/demoData';
+import { calculateSimulation } from '../logic/financialModel';
+
+const defaultPanamaxSim = calculateSimulation(DEMO_DATA.defaultSimulationParams);
+const annualFuelExpenseCr = ((DEMO_DATA.defaultSimulationParams.annualFuelConsumption * DEMO_DATA.defaultSimulationParams.fuelPricePerTonneINR) / DEMO_DATA.constants.inrCroreToUnits).toFixed(1);
 
 export const PRESENTATION_SCENES: SceneDefinition[] = [
   {
@@ -12,7 +17,7 @@ export const PRESENTATION_SCENES: SceneDefinition[] = [
     keyHighlight: {
       label: 'ANNUAL FUEL BURN',
       value: '10,000 MT',
-      sublabel: '₹50.0 Cr/yr bunker drainage',
+      sublabel: `₹${annualFuelExpenseCr} Cr/yr bunker drainage`,
     },
   },
   {
@@ -25,7 +30,7 @@ export const PRESENTATION_SCENES: SceneDefinition[] = [
     sectionIdInExploreMode: 'problem',
     keyHighlight: {
       label: 'UPFRONT CAPEX IMPASSE',
-      value: '₹8 – 20 Cr ($1.0M – $2.4M USD)',
+      value: '₹8 – 30 Cr ($0.84M – $3.14M USD)',
       sublabel: 'Locked balance sheets',
     },
   },
@@ -67,8 +72,8 @@ export const PRESENTATION_SCENES: SceneDefinition[] = [
     sectionIdInExploreMode: 'simulator',
     keyHighlight: {
       label: 'ANNUAL SAVINGS',
-      value: '₹7.50 Cr',
-      sublabel: 'DSCR 3.44x coverage',
+      value: `₹${defaultPanamaxSim.grossAnnualSavingsINR.toFixed(2)} Cr`,
+      sublabel: `DSCR ${defaultPanamaxSim.debtServiceCoverageRatio.toFixed(2)}x coverage`,
     },
   },
   {
@@ -80,9 +85,9 @@ export const PRESENTATION_SCENES: SceneDefinition[] = [
     sceneSubtitle: 'Fair distribution: Senior Debt, Platform Oracle, Charterer, and Owner',
     sectionIdInExploreMode: 'waterfall',
     keyHighlight: {
-      label: 'FREE CASHFLOW',
-      value: '+₹5.02 Cr',
-      sublabel: 'Split between Owner & Charterer',
+      label: 'ANNUAL SAVINGS',
+      value: `₹${defaultPanamaxSim.grossAnnualSavingsINR.toFixed(2)} Cr`,
+      sublabel: `₹${defaultPanamaxSim.annualRepaymentINR.toFixed(2)} Cr Senior Debt Service`,
     },
   },
   {
@@ -90,13 +95,13 @@ export const PRESENTATION_SCENES: SceneDefinition[] = [
     index: 6,
     chapterNumber: '06',
     chapterTitle: 'CONTRACTUAL ARCHITECTURE',
-    sceneTitle: 'SOLVING THE SPLIT INCENTIVE (VOYAGE VS TIME CHARTER)',
-    sceneSubtitle: 'BIMCO transition clause sharing verified savings between owner & charterer',
+    sceneTitle: 'FOUR CHARTER STRUCTURES & SPLIT INCENTIVE ALIGNMENT',
+    sceneSubtitle: 'Solving split incentives across Voyage, Time Charter, Bareboat, and Contract of Affreightment',
     sectionIdInExploreMode: 'charter',
     keyHighlight: {
-      label: 'SPLIT INCENTIVE',
-      value: 'RESOLVED',
-      sublabel: '50/50 shared surplus',
+      label: 'CHARTER MODELS',
+      value: '4 STRUCTURES',
+      sublabel: 'Voyage • Time • Bareboat • COA',
     },
   },
   {
@@ -166,7 +171,7 @@ export const PRESENTATION_SCENES: SceneDefinition[] = [
     keyHighlight: {
       label: 'FLEET TARGET',
       value: '1,000 SHIPS',
-      sublabel: '₹7,500 Cr/yr national bunker saved',
+      sublabel: `₹${(defaultPanamaxSim.grossAnnualSavingsINR * 1000).toLocaleString()} Cr/yr national bunker saved`,
     },
   },
   {
@@ -189,37 +194,37 @@ export const PRESENTER_PRESETS: Record<PresenterPreset, PresetValues> = {
   BASE: {
     name: 'BASE CASE',
     tag: 'STANDARD MARITIME ASSUMPTIONS',
-    efficiency: 15.0,
-    fuelPrice: 50000,
-    operatingDays: 300,
-    retrofitCost: 10.0,
-    description: '15% efficiency improvement, ₹50,000/t VLSFO bunker, 300 sailing days/yr (100% target utilization).',
+    efficiency: DEMO_DATA.defaultSimulationParams.efficiencyImprovementPercent,
+    fuelPrice: DEMO_DATA.defaultSimulationParams.fuelPricePerTonneINR,
+    operatingDays: DEMO_DATA.defaultSimulationParams.operatingDays,
+    retrofitCost: DEMO_DATA.defaultSimulationParams.retrofitCostINR,
+    description: `${DEMO_DATA.defaultSimulationParams.efficiencyImprovementPercent.toFixed(1)}% efficiency improvement (4 Flettner Rotors), ₹${DEMO_DATA.defaultSimulationParams.fuelPricePerTonneINR.toLocaleString()}/MT VLSFO bunker, 300 sailing days/yr.`,
   },
   OPTIMISTIC: {
     name: 'OPTIMISTIC',
     tag: 'HIGH BUNKER & FULL COMPLIANCE',
-    efficiency: 22.0,
+    efficiency: 10.0,
     fuelPrice: 62000,
     operatingDays: 340,
-    retrofitCost: 10.0,
-    description: '22% efficiency (wind-assist + air lubrication combo), ₹62,000/t high bunker prices, 340 sea days.',
+    retrofitCost: 30.0,
+    description: '10.0% efficiency (favorable wind routes), ₹62,000/t high bunker prices, 340 sea days.',
   },
   CONSERVATIVE: {
     name: 'CONSERVATIVE',
     tag: 'MODERATE WEATHER & 80% UTILIZATION',
-    efficiency: 8.0,
+    efficiency: 6.0,
     fuelPrice: 40000,
     operatingDays: 240,
-    retrofitCost: 10.0,
-    description: '8% modest hydrodynamic gain, ₹40,000/t low fuel market, 240 sea days (80% utilization).',
+    retrofitCost: 30.0,
+    description: '6.0% modest wind-assist gain, ₹40,000/t low fuel market, 240 sea days (80% utilization).',
   },
   STRESS: {
     name: 'STRESS CASE',
     tag: 'CRASHED BUNKER & 60% UTILIZATION',
-    efficiency: 5.0,
+    efficiency: 4.5,
     fuelPrice: 35000,
     operatingDays: 180,
-    retrofitCost: 10.0,
-    description: '5% minimal efficiency gain, ₹35,000/t crashed bunker price, 180 days (60% utilization / long port idle).',
+    retrofitCost: 30.0,
+    description: '4.5% minimal efficiency gain, ₹35,000/t crashed bunker price, 180 days (60% utilization / long port idle).',
   },
 };

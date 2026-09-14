@@ -8,9 +8,9 @@ export const Scene9Scale: React.FC = () => {
 
   const fleetOptions = [1, 10, 50, 100, 500, 1000];
 
-  const baseSavingsPerShipCr = simResult.grossAnnualSavingsINR; // e.g. 7.5 Cr
-  const baseFuelSavedTonnes = simResult.annualFuelSavedTonnes; // e.g. 1,500 MT
-  const baseCO2Tonnes = simResult.emissionsAvoidedCO2eTonnes; // e.g. 4,671 MT
+  const baseSavingsPerShipCr = simResult.grossAnnualSavingsINR;
+  const baseFuelSavedTonnes = simResult.annualFuelSavedTonnes;
+  const baseCO2Tonnes = simResult.emissionsAvoidedCO2eTonnes;
 
   const totalSavingsCr = (baseSavingsPerShipCr * fleetSize).toLocaleString(undefined, { maximumFractionDigits: 1 });
   const totalFuelMT = (baseFuelSavedTonnes * fleetSize).toLocaleString();

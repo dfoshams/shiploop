@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { DEMO_DATA } from '../data/demoData';
 import { SimulationParams, SimulationResult } from '../types';
+import { SourceButton } from './SourceButton';
 
 interface VerificationLayerProps {
   params: SimulationParams;
@@ -91,10 +92,10 @@ export const VerificationLayer: React.FC<VerificationLayerProps> = ({
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             {[
               { step: '01', name: 'VESSEL DATA', desc: 'Torque & flow sensors', icon: Cpu },
-              { step: '02', name: 'MEASUREMENT', desc: 'Normalized for weather', icon: Activity },
+              { step: '02', name: 'MEASUREMENT', desc: 'Normalized for weather', icon: Activity, evidenceId: 'VERIFICATION-001' },
               { step: '03', name: 'BASELINE', desc: 'Pre-retrofit CFD curve', icon: Hash },
               { step: '04', name: 'ACTUALS', desc: 'Real voyage fuel burn', icon: Activity },
-              { step: '05', name: 'CLASS AUDIT', desc: 'IRS / DNV / BV verify', icon: ShieldCheck },
+              { step: '05', name: 'CLASS AUDIT', desc: 'IRS / DNV / BV verify', icon: ShieldCheck, evidenceId: 'REGULATORY-001' },
               { step: '06', name: 'SETTLEMENT', desc: 'Escrow release to bank', icon: FileCheck },
             ].map((p, idx) => {
               const Icon = p.icon;
@@ -102,7 +103,10 @@ export const VerificationLayer: React.FC<VerificationLayerProps> = ({
                 <div key={p.name} className="p-3 bg-[#020617] border border-white/10 space-y-1">
                   <div className="flex justify-between items-center text-[10px] font-mono text-white/40">
                     <span>{p.step}</span>
-                    <Icon className="w-3.5 h-3.5 text-[#00F2FF]" />
+                    <div className="flex items-center gap-1">
+                      {p.evidenceId && <SourceButton evidenceId={p.evidenceId} />}
+                      <Icon className="w-3.5 h-3.5 text-[#00F2FF]" />
+                    </div>
                   </div>
                   <div className="text-xs font-mono font-bold text-white">{p.name}</div>
                   <div className="text-[10px] text-white/50 font-mono leading-tight">{p.desc}</div>
@@ -122,6 +126,7 @@ export const VerificationLayer: React.FC<VerificationLayerProps> = ({
               <div className="flex items-center gap-2">
                 <Activity className="w-4 h-4 text-emerald-400" />
                 <span className="font-bold text-white uppercase tracking-wider">ISO 19030 NORMALIZED SPEED-POWER PROFILE</span>
+                <SourceButton evidenceId="VERIFICATION-001" />
               </div>
               <div className="flex items-center gap-4 text-[11px]">
                 <span className="flex items-center gap-1 text-rose-400">
@@ -215,7 +220,7 @@ export const VerificationLayer: React.FC<VerificationLayerProps> = ({
                 <span className="text-emerald-400 font-bold">Actual: {currentHoveredPoint.postRetrofitTonnes} t/day</span>
               </div>
               <div className="text-[#00F2FF] font-bold">
-                Delta: -{(currentHoveredPoint.baselineTonnes - currentHoveredPoint.postRetrofitTonnes).toFixed(1)} t/day (-15.2%)
+                Delta: -{(currentHoveredPoint.baselineTonnes - currentHoveredPoint.postRetrofitTonnes).toFixed(1)} t/day (-{(((currentHoveredPoint.baselineTonnes - currentHoveredPoint.postRetrofitTonnes) / currentHoveredPoint.baselineTonnes) * 100).toFixed(1)}%)
               </div>
             </div>
 

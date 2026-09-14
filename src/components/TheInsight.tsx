@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles, ArrowRight, RefreshCw, Layers, ShieldCheck, Banknote } from 'lucide-react';
+import { DEMO_DATA } from '../data/demoData';
+import { calculateSimulation } from '../logic/financialModel';
+import { SourceButton } from './SourceButton';
+
+const insightSim = calculateSimulation(DEMO_DATA.defaultSimulationParams);
+const defaultParams = DEMO_DATA.defaultSimulationParams;
 
 interface TheInsightProps {
   isPresentationMode?: boolean;
@@ -68,10 +74,13 @@ export const TheInsight: React.FC<TheInsightProps> = ({
               <div className="w-12 h-12 bg-white/5 border border-[#00F2FF]/40 flex items-center justify-center mx-auto mb-4 text-[#00F2FF]">
                 <span className="font-mono font-bold text-xs">FUEL</span>
               </div>
-              <div className="text-xs font-mono text-[#00F2FF] font-bold uppercase tracking-wider mb-1">01 UNBURNED FUEL</div>
-              <div className="text-xl font-mono font-black text-white mb-2">1,500 Tonnes</div>
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-xs font-mono text-[#00F2FF] font-bold uppercase tracking-wider">01 UNBURNED FUEL</span>
+                <SourceButton evidenceId="TECH-001" />
+              </div>
+              <div className="text-xl font-mono font-black text-white mb-2">{insightSim.annualFuelSavedTonnes.toLocaleString()} Tonnes</div>
               <p className="text-xs text-white/50 font-mono">
-                Hydrodynamic efficiency avoids 15% of annual bunker consumption at sea.
+                Flettner rotor wind assistance avoids {defaultParams.efficiencyImprovementPercent.toFixed(1)}% of annual bunker consumption at sea.
               </p>
             </div>
 
@@ -83,7 +92,7 @@ export const TheInsight: React.FC<TheInsightProps> = ({
                 <Banknote className="w-6 h-6" />
               </div>
               <div className="text-xs font-mono text-emerald-400 font-bold uppercase tracking-wider mb-1">02 CASH VALUE</div>
-              <div className="text-xl font-mono font-black text-white mb-2">₹7.50 Cr / yr</div>
+              <div className="text-xl font-mono font-black text-white mb-2">₹{insightSim.grossAnnualSavingsINR.toFixed(2)} Cr / yr</div>
               <p className="text-xs text-white/50 font-mono">
                 Avoided bunker invoices convert into real-time operational liquidity.
               </p>
@@ -97,9 +106,9 @@ export const TheInsight: React.FC<TheInsightProps> = ({
                 <RefreshCw className="w-6 h-6" />
               </div>
               <div className="text-xs font-mono text-[#FFB347] font-bold uppercase tracking-wider mb-1">03 REPAYMENT LOOP</div>
-              <div className="text-xl font-mono font-black text-white mb-2">₹2.18 Cr Debt Service</div>
+              <div className="text-xl font-mono font-black text-white mb-2">₹{insightSim.annualRepaymentINR.toFixed(2)} Cr Debt Service</div>
               <p className="text-xs text-white/50 font-mono">
-                Bank is amortized; remaining ₹5.02 Cr surplus stays with the shipowner.
+                Verified savings service senior debt with remaining value retained by the shipowner.
               </p>
             </div>
 

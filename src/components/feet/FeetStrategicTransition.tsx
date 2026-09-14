@@ -51,7 +51,7 @@ export const FeetStrategicTransition: React.FC<FeetStrategicTransitionProps> = (
               <span>SAVINGS EXIST</span>
             </div>
             <p className="text-xs text-slate-300 font-mono">
-              ₹5–10 Cr/year in avoided bunker fuel costs per deep-sea vessel directly covers amortizing capital expenditure.
+              Avoided bunker fuel costs per deep-sea vessel directly cover amortizing capital expenditure.
             </p>
           </div>
 

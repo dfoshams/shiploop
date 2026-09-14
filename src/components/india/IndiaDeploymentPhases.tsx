@@ -38,7 +38,7 @@ export const IndiaDeploymentPhases: React.FC = () => {
       focus: 'Demonstrate real-world verified fuel savings and flawless scheduled debt service recovery across full monsoon & seasonal sailing cycles.',
       deliverables: [
         '12 months uninterrupted quarterly debt servicing',
-        'Verification of P90 savings capture >15%',
+        'Verification of P90 savings capture targets',
         'Publication of audited Class verification whitepaper',
       ],
       color: '#38BDF8',

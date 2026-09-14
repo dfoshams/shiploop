@@ -5,26 +5,26 @@ import {
   Building2, 
   ShieldCheck, 
   ArrowRight, 
-  ArrowDown, 
   Coins, 
   Scale, 
   Check,
-  FileSignature
+  FileSignature,
+  FileText
 } from 'lucide-react';
 import { EvidenceMarker } from './EvidenceMarker';
 
 interface SplitIncentiveAndCharterProps {
-  onCharterModeChange?: (mode: 'VOYAGE' | 'TIME_CHARTER') => void;
-  currentCharterMode?: 'VOYAGE' | 'TIME_CHARTER';
+  onCharterModeChange?: (mode: 'VOYAGE' | 'TIME_CHARTER' | 'BAREBOAT' | 'COA') => void;
+  currentCharterMode?: 'VOYAGE' | 'TIME_CHARTER' | 'BAREBOAT' | 'COA';
 }
 
 export const SplitIncentiveAndCharter: React.FC<SplitIncentiveAndCharterProps> = ({
   onCharterModeChange,
   currentCharterMode = 'VOYAGE',
 }) => {
-  const [charterMode, setCharterMode] = useState<'VOYAGE' | 'TIME_CHARTER'>(currentCharterMode);
+  const [charterMode, setCharterMode] = useState<'VOYAGE' | 'TIME_CHARTER' | 'BAREBOAT' | 'COA'>(currentCharterMode);
 
-  const handleToggle = (mode: 'VOYAGE' | 'TIME_CHARTER') => {
+  const handleToggle = (mode: 'VOYAGE' | 'TIME_CHARTER' | 'BAREBOAT' | 'COA') => {
     setCharterMode(mode);
     if (onCharterModeChange) {
       onCharterModeChange(mode);
@@ -35,38 +35,58 @@ export const SplitIncentiveAndCharter: React.FC<SplitIncentiveAndCharterProps> =
     <div className="w-full bg-[#020617]/90 border border-white/10 tech-corner-accent p-5 sm:p-7 space-y-6 font-mono">
       
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-white/10 pb-4">
         <div>
           <span className="text-[10px] text-[#00F2FF] font-bold uppercase tracking-widest flex items-center gap-1.5">
             <Scale className="w-3 h-3 text-[#00F2FF]" />
             <span>CONTRACTUAL ARCHITECTURE & MARITIME INCENTIVES</span>
           </span>
           <h3 className="text-base sm:text-xl font-black text-white uppercase tracking-tight mt-0.5">
-            RESOLVING THE SPLIT-INCENTIVE IN INDIAN SHIPPING
+            FOUR CHARTER STRUCTURES & INCENTIVE ALIGNMENT
           </h3>
         </div>
 
-        {/* Interactive Charter Toggle */}
-        <div className="flex items-center gap-1 p-1 bg-white/5 border border-white/20 rounded-sm self-start sm:self-auto">
+        {/* 4 Interactive Charter Toggles */}
+        <div className="grid grid-cols-2 sm:flex sm:items-center gap-1 p-1 bg-white/5 border border-white/20 rounded-sm self-start lg:self-auto">
           <button
             onClick={() => handleToggle('VOYAGE')}
-            className={`px-3 py-1.5 text-xs uppercase font-bold transition-all cursor-pointer ${
+            className={`px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs uppercase font-bold transition-all cursor-pointer text-center ${
               charterMode === 'VOYAGE'
                 ? 'bg-[#00F2FF] text-black shadow-[0_0_12px_rgba(0,242,255,0.4)]'
                 : 'text-white/60 hover:text-white'
             }`}
           >
-            VOYAGE CHARTER
+            VOYAGE
           </button>
           <button
             onClick={() => handleToggle('TIME_CHARTER')}
-            className={`px-3 py-1.5 text-xs uppercase font-bold transition-all cursor-pointer ${
+            className={`px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs uppercase font-bold transition-all cursor-pointer text-center ${
               charterMode === 'TIME_CHARTER'
-                ? 'bg-[#00F2FF] text-black shadow-[0_0_12px_rgba(0,242,255,0.4)]'
+                ? 'bg-emerald-400 text-black shadow-[0_0_12px_rgba(52,211,153,0.4)]'
                 : 'text-white/60 hover:text-white'
             }`}
           >
             TIME CHARTER
+          </button>
+          <button
+            onClick={() => handleToggle('BAREBOAT')}
+            className={`px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs uppercase font-bold transition-all cursor-pointer text-center ${
+              charterMode === 'BAREBOAT'
+                ? 'bg-[#FFB347] text-black shadow-[0_0_12px_rgba(255,179,71,0.4)]'
+                : 'text-white/60 hover:text-white'
+            }`}
+          >
+            BAREBOAT
+          </button>
+          <button
+            onClick={() => handleToggle('COA')}
+            className={`px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs uppercase font-bold transition-all cursor-pointer text-center ${
+              charterMode === 'COA'
+                ? 'bg-sky-400 text-black shadow-[0_0_12px_rgba(56,189,248,0.4)]'
+                : 'text-white/60 hover:text-white'
+            }`}
+          >
+            COA
           </button>
         </div>
       </div>
@@ -95,11 +115,11 @@ export const SplitIncentiveAndCharter: React.FC<SplitIncentiveAndCharterProps> =
             <span className="text-xs font-bold text-amber-400 uppercase flex items-center gap-1.5">
               <Coins className="w-3.5 h-3.5" /> CHARTERER
             </span>
-            <span className="text-[9px] text-white/40 uppercase">BUNKER PAYER</span>
+            <span className="text-[9px] text-white/40 uppercase">BUNKER / OPEX PAYER</span>
           </div>
           <div className="text-sm font-bold text-white uppercase">May benefit from lower fuel burn</div>
           <p className="text-[11px] text-white/60 font-normal leading-relaxed">
-            Under time charters, charterer purchases fuel directly. They welcome efficiency gains but won't co-finance shipowner's permanent hardware.
+            Under time or bareboat charters, charterer purchases fuel directly. They welcome efficiency gains but won't co-finance shipowner's permanent hardware.
           </p>
           <div className="text-[10px] text-amber-300 font-bold">→ Fuel Savings Realized at Sea</div>
         </div>
@@ -127,7 +147,7 @@ export const SplitIncentiveAndCharter: React.FC<SplitIncentiveAndCharterProps> =
           THE COORDINATION BREAKTHROUGH
         </div>
         <div className="text-base sm:text-lg font-black text-white tracking-wide uppercase">
-          "SHIPLOOP CONVERTS OPERATIONAL SAVINGS INTO A STRUCTURED REPAYMENT STREAM."
+          "SHIPLOOP CONVERTS OPERATIONAL SAVINGS INTO A STRUCTURED REPAYMENT STREAM ACROSS ALL CHARTER TYPES."
         </div>
       </div>
 
@@ -137,17 +157,27 @@ export const SplitIncentiveAndCharter: React.FC<SplitIncentiveAndCharterProps> =
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-white/10">
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold text-white uppercase">
-              CONTRACTUAL CASHFLOW: {charterMode === 'VOYAGE' ? 'VOYAGE CHARTER' : 'TIME CHARTER (WITH SAVINGS-SHARING CLAUSE)'}
+              CONTRACTUAL CASHFLOW: {
+                charterMode === 'VOYAGE' ? 'VOYAGE CHARTER' :
+                charterMode === 'TIME_CHARTER' ? 'TIME CHARTER (BIMCO GREEN CLAUSE)' :
+                charterMode === 'BAREBOAT' ? 'BAREBOAT CHARTER (GREEN RETROFIT RIDER)' :
+                'CONTRACT OF AFFREIGHTMENT (FREIGHT ADJUSTMENT)'
+              }
             </span>
             <EvidenceMarker type="PROPOSED" label="PROPOSED CONTRACT STRUCTURE" />
           </div>
           <span className="text-[10px] text-[#00F2FF] font-bold">
-            {charterMode === 'VOYAGE' ? 'DIRECT OWNER FUEL SAVINGS' : 'BIMCO GREEN CLAUSE SHARING'}
+            {
+              charterMode === 'VOYAGE' ? 'DIRECT OWNER FUEL SAVINGS' :
+              charterMode === 'TIME_CHARTER' ? 'GAIN-SHARE RIDER CLAUSE' :
+              charterMode === 'BAREBOAT' ? 'CONTRACTUAL SAVINGS SHARE' :
+              'OWNER RETAINS VERIFIED SAVINGS'
+            }
           </span>
         </div>
 
-        {charterMode === 'VOYAGE' ? (
-          /* VOYAGE CHARTER SCHEMATIC */
+        {/* 1. VOYAGE CHARTER SCHEMATIC */}
+        {charterMode === 'VOYAGE' && (
           <div className="space-y-4">
             <p className="text-xs text-white/70 leading-relaxed font-normal">
               In a <span className="text-[#00F2FF] font-bold">Voyage Charter</span>, the <span className="text-purple-400 font-bold">Shipowner</span> purchases fuel directly. Fuel savings directly reduce owner operating expenditures, creating an uncomplicated, direct repayment stream.
@@ -175,11 +205,13 @@ export const SplitIncentiveAndCharter: React.FC<SplitIncentiveAndCharterProps> =
               </div>
             </div>
           </div>
-        ) : (
-          /* TIME CHARTER SCHEMATIC (Split Incentive Solved) */
+        )}
+
+        {/* 2. TIME CHARTER SCHEMATIC */}
+        {charterMode === 'TIME_CHARTER' && (
           <div className="space-y-4">
             <p className="text-xs text-white/70 leading-relaxed font-normal">
-              In a <span className="text-[#00F2FF] font-bold">Time Charter</span>, the <span className="text-amber-400 font-bold">Charterer</span> pays fuel bills. SHIPLOOP introduces a standardized savings-sharing clause: charterer passes through a fraction of fuel savings to service the retrofit debt, keeping the remainder as net operational gain.
+              In a <span className="text-emerald-400 font-bold">Time Charter</span>, the <span className="text-amber-400 font-bold">Charterer</span> pays fuel bills. SHIPLOOP introduces a standardized savings-sharing clause: charterer passes through an agreed fraction of fuel savings to service the retrofit debt, keeping the remainder as net operational gain.
             </p>
 
             <div className="p-4 bg-[#020617] border border-white/15 flex flex-col md:flex-row items-center justify-between gap-3 text-center">
@@ -194,7 +226,7 @@ export const SplitIncentiveAndCharter: React.FC<SplitIncentiveAndCharterProps> =
               </div>
               <ArrowRight className="w-4 h-4 text-[#00F2FF] hidden md:block" />
               <div className="p-3 bg-amber-500/15 border-2 border-amber-400 rounded-sm w-full md:w-1/5 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
-                <span className="text-xs font-black text-amber-300 block uppercase">SAVINGS SHARING CLAUSE</span>
+                <span className="text-xs font-black text-amber-300 block uppercase">GAIN-SHARE RIDER</span>
                 <span className="text-[9px] text-white/80">BIMCO Transition Standard</span>
               </div>
               <ArrowRight className="w-4 h-4 text-[#00F2FF] hidden md:block" />
@@ -212,6 +244,83 @@ export const SplitIncentiveAndCharter: React.FC<SplitIncentiveAndCharterProps> =
             <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 text-xs text-emerald-300 flex items-center justify-between">
               <span>RESULT: Charterer pays less fuel than baseline, Owner gains upgraded vessel with zero equity, Bank receives timely amortisation.</span>
               <span className="font-bold uppercase text-[10px]">WIN • WIN • WIN</span>
+            </div>
+          </div>
+        )}
+
+        {/* 3. BAREBOAT CHARTER SCHEMATIC */}
+        {charterMode === 'BAREBOAT' && (
+          <div className="space-y-4">
+            <p className="text-xs text-white/70 leading-relaxed font-normal">
+              In a <span className="text-[#FFB347] font-bold">Bareboat Charter</span>, the <span className="text-[#FFB347] font-bold">Charterer</span> takes operational control and pays all vessel operating expenses, including bunker fuel. Default savings belong to the charterer. The SHIPLOOP <span className="text-white font-bold">Bareboat Green Retrofit Savings Rider</span> directs an agreed share of verified fuel savings to support retrofit debt service while preserving bareboat economics.
+            </p>
+
+            <div className="p-4 bg-[#020617] border border-white/15 flex flex-col md:flex-row items-center justify-between gap-3 text-center">
+              <div className="p-3 bg-[#FFB347]/15 border border-[#FFB347]/40 rounded-sm w-full md:w-1/5">
+                <span className="text-xs font-bold text-white block uppercase">CHARTERER (OPEX)</span>
+                <span className="text-[10px] text-[#FFB347]">Full operating control</span>
+              </div>
+              <ArrowRight className="w-4 h-4 text-[#FFB347] hidden md:block" />
+              <div className="p-3 bg-emerald-950/30 border border-emerald-500/40 rounded-sm w-full md:w-1/5">
+                <span className="text-xs font-bold text-white block uppercase">VERIFIED SAVINGS</span>
+                <span className="text-[10px] text-emerald-300">Benefits charterer by default</span>
+              </div>
+              <ArrowRight className="w-4 h-4 text-[#FFB347] hidden md:block" />
+              <div className="p-3 bg-[#FFB347]/20 border-2 border-[#FFB347] rounded-sm w-full md:w-1/5 shadow-[0_0_15px_rgba(255,179,71,0.25)]">
+                <span className="text-xs font-black text-[#FFB347] block uppercase">BAREBOAT RIDER</span>
+                <span className="text-[9px] text-white/80">Contractual Savings Share</span>
+              </div>
+              <ArrowRight className="w-4 h-4 text-[#FFB347] hidden md:block" />
+              <div className="p-3 bg-[#00F2FF]/15 border border-[#00F2FF]/50 rounded-sm w-full md:w-1/5">
+                <span className="text-xs font-bold text-[#00F2FF] block uppercase">DEBT SERVICE POOL</span>
+                <span className="text-[10px] text-white/70">Agreed share swept</span>
+              </div>
+              <ArrowRight className="w-4 h-4 text-[#FFB347] hidden md:block" />
+              <div className="p-3 bg-sky-950/30 border border-sky-500/40 rounded-sm w-full md:w-1/5">
+                <span className="text-xs font-bold text-white block uppercase">BANK AMORTIZED</span>
+                <span className="text-[10px] text-sky-300">Non-recourse recovery</span>
+              </div>
+            </div>
+
+            <div className="p-3 bg-[#FFB347]/10 border border-[#FFB347]/30 text-xs text-[#FFB347] flex items-center justify-between">
+              <span>RESULT: Charterer maintains lower OPEX while funding hardware; Shipowner receives back an upgraded, CII-compliant vessel without capital outlay.</span>
+              <span className="font-bold uppercase text-[10px]">COVENANT ALIGNED</span>
+            </div>
+          </div>
+        )}
+
+        {/* 4. CONTRACT OF AFFREIGHTMENT (COA) SCHEMATIC */}
+        {charterMode === 'COA' && (
+          <div className="space-y-4">
+            <p className="text-xs text-white/70 leading-relaxed font-normal">
+              In a <span className="text-sky-400 font-bold">Contract of Affreightment (COA)</span>, the <span className="text-[#00F2FF] font-bold">Shipowner</span> commits to transport an agreed volume of cargo over multiple voyages across a defined multi-year period. The owner operates the vessel and pays voyage fuel. Verified fuel savings accrue directly to the owner under COA freight adjustment clauses, effortlessly funding debt service.
+            </p>
+
+            <div className="p-4 bg-[#020617] border border-white/15 flex flex-col md:flex-row items-center justify-between gap-4 text-center">
+              <div className="p-3 bg-sky-950/30 border border-sky-500/40 rounded-sm w-full md:w-1/4">
+                <span className="text-xs font-bold text-white block uppercase">OWNER (COA FLEET)</span>
+                <span className="text-[10px] text-sky-300">Operates volume voyages</span>
+              </div>
+              <ArrowRight className="w-5 h-5 text-sky-400 hidden md:block" />
+              <div className="p-3 bg-emerald-950/30 border border-emerald-500/40 rounded-sm w-full md:w-1/4">
+                <span className="text-xs font-bold text-white block uppercase">VERIFIED SAVINGS</span>
+                <span className="text-[10px] text-emerald-300">Accrue to owner's ledger</span>
+              </div>
+              <ArrowRight className="w-5 h-5 text-sky-400 hidden md:block" />
+              <div className="p-3 bg-[#00F2FF]/15 border border-[#00F2FF]/50 rounded-sm w-full md:w-1/4">
+                <span className="text-xs font-bold text-[#00F2FF] block uppercase">DEBT SERVICE SWEEP</span>
+                <span className="text-[10px] text-white/70">Covers principal + interest</span>
+              </div>
+              <ArrowRight className="w-5 h-5 text-sky-400 hidden md:block" />
+              <div className="p-3 bg-emerald-950/30 border border-emerald-500/40 rounded-sm w-full md:w-1/4">
+                <span className="text-xs font-bold text-emerald-300 block uppercase">OWNER SURPLUS</span>
+                <span className="text-[10px] text-white/70">100% free cashflow retain</span>
+              </div>
+            </div>
+
+            <div className="p-3 bg-sky-500/10 border border-sky-500/30 text-xs text-sky-300 flex items-center justify-between">
+              <span>RESULT: Freight rates remain predictable for cargo charterer, while owner captures 100% of efficiency upside across scheduled sailings.</span>
+              <span className="font-bold uppercase text-[10px]">FLEET EFFICIENCY</span>
             </div>
           </div>
         )}

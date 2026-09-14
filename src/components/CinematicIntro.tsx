@@ -18,7 +18,10 @@ import {
   Wind
 } from 'lucide-react';
 import { DEMO_DATA } from '../data/demoData';
+import { calculateSimulation } from '../logic/financialModel';
 import { cinematicAudio } from '../utils/cinematicAudio';
+
+const introPanamaxSim = calculateSimulation(DEMO_DATA.defaultSimulationParams);
 
 interface CinematicIntroProps {
   onExplore?: () => void;
@@ -108,9 +111,11 @@ export const CinematicIntro: React.FC<CinematicIntroProps> = ({
 
   // Demo constants from demoData
   const annualFuel = DEMO_DATA.defaultSimulationParams.annualFuelConsumption; // 10,000 t
-  const fuelPrice = DEMO_DATA.defaultSimulationParams.fuelPricePerTonneINR; // ₹50,000
-  const annualCostCr = ((annualFuel * fuelPrice) / DEMO_DATA.constants.inrCroreToUnits).toFixed(2); // 50.00 Cr
-  const retrofitCostCr = DEMO_DATA.defaultSimulationParams.retrofitCostINR.toFixed(2); // 10.00 Cr
+  const fuelPrice = DEMO_DATA.defaultSimulationParams.fuelPricePerTonneINR;
+  const annualCostCr = ((annualFuel * fuelPrice) / DEMO_DATA.constants.inrCroreToUnits).toFixed(2);
+  const retrofitCostCr = DEMO_DATA.defaultSimulationParams.retrofitCostINR % 1 === 0 
+    ? DEMO_DATA.defaultSimulationParams.retrofitCostINR.toFixed(0) 
+    : DEMO_DATA.defaultSimulationParams.retrofitCostINR.toFixed(2);
 
   // Audio toggle
   const toggleAudio = () => {
@@ -626,8 +631,8 @@ export const CinematicIntro: React.FC<CinematicIntroProps> = ({
                   <div className="text-lg font-bold text-white">10,000 t / yr</div>
                 </div>
                 <div className="p-3 bg-slate-900/80 border border-white/10">
-                  <div className="text-[10px] text-white/40">VLSFO BUNKER PRICE</div>
-                  <div className="text-lg font-bold text-[#FFB347]">₹50,000 / t</div>
+                  <div className="text-[10px] text-white/40">VLSFO</div>
+                  <div className="text-lg font-bold text-[#FFB347]">₹{fuelPrice.toLocaleString()} / MT</div>
                 </div>
                 <div className="p-3 bg-slate-900/90 border border-emerald-500/40 shadow-[0_0_15px_rgba(52,211,153,0.15)]">
                   <div className="text-[10px] text-emerald-400">ANNUAL FUEL EXPENSE</div>
@@ -682,7 +687,7 @@ export const CinematicIntro: React.FC<CinematicIntroProps> = ({
               {subStep >= 1 && (
                 <div className="p-3 bg-red-900/20 border border-red-500/30 max-w-xl mx-auto animate-fadeIn">
                   <div className="text-xs text-red-300 font-mono mb-1">UPFRONT RETROFIT CAPEX REQUIRED:</div>
-                  <div className="text-2xl sm:text-3xl font-black font-mono text-white">₹{retrofitCostCr} Crore (~$1.2M USD)</div>
+                  <div className="text-2xl sm:text-3xl font-black font-mono text-white">₹{retrofitCostCr} Crore (~$3.14M USD)</div>
                   <div className="text-[11px] text-slate-300 mt-1 font-sans">
                     Shipowners must pay upfront capital today, but fuel savings only trickle in over future years.
                   </div>
@@ -700,12 +705,12 @@ export const CinematicIntro: React.FC<CinematicIntroProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto my-2 text-left font-mono">
                 <div className="p-4 bg-slate-900/90 border-l-4 border-red-500 border-white/10">
                   <div className="text-xs text-red-400 font-bold">TODAY'S PROBLEM</div>
-                  <div className="text-sm sm:text-base font-bold text-white mt-1">₹10.0 Cr Capital Needed NOW</div>
+                  <div className="text-sm sm:text-base font-bold text-white mt-1">₹{DEMO_DATA.defaultSimulationParams.retrofitCostINR.toFixed(1)} Cr Capital Needed NOW</div>
                   <div className="text-[11px] text-slate-400 mt-1 font-sans">Balance sheet equity risk, dry-dock capital outlay.</div>
                 </div>
                 <div className="p-4 bg-slate-900/90 border-l-4 border-emerald-500 border-white/10">
                   <div className="text-xs text-emerald-400 font-bold">TOMORROW'S REWARD</div>
-                  <div className="text-sm sm:text-base font-bold text-white mt-1">₹7.5 Cr / yr Fuel Saved LATER</div>
+                  <div className="text-sm sm:text-base font-bold text-white mt-1">₹{introPanamaxSim.grossAnnualSavingsINR.toFixed(2)} Cr / yr Fuel Saved LATER</div>
                   <div className="text-[11px] text-slate-400 mt-1 font-sans">Future savings accumulate across 5–10 sailing years.</div>
                 </div>
               </div>

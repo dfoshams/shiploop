@@ -4,12 +4,17 @@ import { usePresentation } from '../PresentationContext';
 import { cinematicAudio } from '../../utils/cinematicAudio';
 
 export const Scene0Intro: React.FC = () => {
-  const { isPaused, togglePause, sceneTransitionKey } = usePresentation();
+  const { isPaused, togglePause, sceneTransitionKey, simParams } = usePresentation();
   const [hasVoyageStarted, setHasVoyageStarted] = useState<boolean>(false);
   const [isAudioMuted, setIsAudioMuted] = useState<boolean>(true);
   const [fuelBurn, setFuelBurn] = useState<number>(14.2);
   const [speed, setSpeed] = useState<number>(13.8);
   const [engineLoad, setEngineLoad] = useState<number>(78);
+
+  const annualFuelTonnes = simParams.annualFuelConsumption || 10000;
+  const fuelPricePerTonne = simParams.fuelPricePerTonneINR;
+  const annualFuelSpendCr = (annualFuelTonnes * fuelPricePerTonne) / 10000000;
+  const dailyBunkerBurnLakh = (annualFuelSpendCr * 100) / (simParams.operatingDays || 300);
 
   // Toggle Audio
   const toggleAudio = () => {
@@ -171,16 +176,16 @@ export const Scene0Intro: React.FC = () => {
             </div>
 
             <div className="text-4xl sm:text-5xl font-black font-mono text-white tracking-tight mb-1">
-              ₹50.0 <span className="text-2xl text-[#FFB347]">Cr/yr</span>
+              ₹{annualFuelSpendCr.toFixed(1)} <span className="text-2xl text-[#FFB347]">Cr/yr</span>
             </div>
 
             <div className="text-xs font-mono text-white/60">
-              10,000 MT fuel burned annually @ ₹50,000/tonne
+              {annualFuelTonnes.toLocaleString()} MT fuel burned annually @ ₹{fuelPricePerTonne.toLocaleString()}/MT
             </div>
 
             <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono">
               <span className="text-white/40">Daily Bunker Burn:</span>
-              <span className="text-[#FFB347] font-bold text-sm">~₹16.6 Lakh / day</span>
+              <span className="text-[#FFB347] font-bold text-sm">~₹{dailyBunkerBurnLakh.toFixed(1)} Lakh / day</span>
             </div>
           </div>
 

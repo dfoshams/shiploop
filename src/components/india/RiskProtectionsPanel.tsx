@@ -31,7 +31,7 @@ export const RiskProtectionsPanel: React.FC = () => {
       id: 3,
       title: '3. CONSERVATIVE SAVINGS ASSUMPTIONS',
       icon: Sliders,
-      description: 'Underwriting models apply a conservative P90 efficiency discount and moderate baseline bunker pricing (e.g. ₹50,000/t VLSFO).',
+      description: 'Underwriting models apply a conservative P90 efficiency discount and moderate baseline bunker pricing (e.g. ₹67,500/MT VLSFO).',
       mechanism: 'Provides built-in debt service coverage cushion (>2.5x DSCR standard).',
     },
     {

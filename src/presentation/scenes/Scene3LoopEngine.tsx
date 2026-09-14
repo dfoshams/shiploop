@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Building2, Wrench, Fuel, ShieldCheck, Banknote, TrendingUp, ArrowRight, Play, RotateCcw } from 'lucide-react';
+import { usePresentation } from '../PresentationContext';
 
 export const Scene3LoopEngine: React.FC = () => {
+  const { simParams, simResult } = usePresentation();
   const [selectedStep, setSelectedStep] = useState<number>(0);
 
   const steps = [
@@ -9,7 +11,7 @@ export const Scene3LoopEngine: React.FC = () => {
       num: '01',
       title: 'FINANCE',
       actor: 'INSTITUTIONAL LENDER / SPV',
-      capitalFlow: '₹10.0 Cr Outflow → Yard Escrow',
+      capitalFlow: `₹${simParams.retrofitCostINR.toFixed(1)} Cr Outflow → Yard Escrow`,
       desc: '100% of retrofit CAPEX provisioned with senior debt. Zero equity required from the shipowner.',
       icon: Building2,
       accent: 'border-cyan-400 text-cyan-400 bg-cyan-950/20',
@@ -19,7 +21,7 @@ export const Scene3LoopEngine: React.FC = () => {
       title: 'RETROFIT',
       actor: 'CERTIFIED SHIPYARD',
       capitalFlow: 'Hardware Commissioned',
-      desc: 'Turnkey installation during scheduled special survey. TRL-9 hydrodynamic hardware installed.',
+      desc: 'Turnkey installation during scheduled special survey. 4 Medium Flettner Rotors commissioned.',
       icon: Wrench,
       accent: 'border-blue-400 text-blue-400 bg-blue-950/20',
     },
@@ -27,8 +29,8 @@ export const Scene3LoopEngine: React.FC = () => {
       num: '03',
       title: 'SAVE',
       actor: 'COMMERCIAL VESSEL AT SEA',
-      capitalFlow: '1,500 MT Fuel Unburned',
-      desc: 'Vessel re-enters commercial service. Hydrodynamic friction drops and bunker burn decreases by 15.0%.',
+      capitalFlow: `${simResult.annualFuelSavedTonnes.toLocaleString()} MT Fuel Unburned`,
+      desc: `Vessel re-enters commercial service. Flettner rotors generate wind thrust, reducing bunker burn by ${simParams.efficiencyImprovementPercent.toFixed(1)}%.`,
       icon: Fuel,
       accent: 'border-teal-400 text-teal-400 bg-teal-950/20',
     },
@@ -45,7 +47,7 @@ export const Scene3LoopEngine: React.FC = () => {
       num: '05',
       title: 'REPAY',
       actor: 'SETTLEMENT CONTRACT',
-      capitalFlow: '₹2.18 Cr/yr → Bank Annuity',
+      capitalFlow: `₹${simResult.annualRepaymentINR.toFixed(2)} Cr/yr → Bank Annuity`,
       desc: 'Verified fuel savings monetized from operating cashflow to satisfy scheduled debt service annuity.',
       icon: Banknote,
       accent: 'border-amber-400 text-amber-400 bg-amber-950/20',
@@ -54,8 +56,8 @@ export const Scene3LoopEngine: React.FC = () => {
       num: '06',
       title: 'RETAIN',
       actor: 'OWNER & CHARTERER',
-      capitalFlow: '+₹5.02 Cr/yr Net Free Surplus',
-      desc: 'Surplus savings above debt service and telemetry reserve are kept by the commercial operators.',
+      capitalFlow: `₹${simResult.grossAnnualSavingsINR.toFixed(2)} Cr/yr Gross Savings`,
+      desc: 'Verified fuel savings service senior debt with remaining value retained by the asset and charterer.',
       icon: TrendingUp,
       accent: 'border-emerald-300 text-emerald-300 bg-emerald-950/20',
     },

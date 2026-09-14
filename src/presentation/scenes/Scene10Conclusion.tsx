@@ -12,7 +12,7 @@ export const Scene10Conclusion: React.FC<Scene10ConclusionProps> = ({ onOpenSour
   const stakeholders = [
     {
       actor: 'COMMERCIAL BANKS',
-      win: 'High-yield green debt asset (8.5% blended) secured by verified physical savings, ring-fenced escrow, and 6-mo DSRF.',
+      win: 'High-yield green debt asset secured by verified physical savings, ring-fenced escrow, and 6-mo DSRF.',
       tag: 'SENIOR SECURED',
     },
     {

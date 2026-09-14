@@ -19,7 +19,7 @@ export const IndianPolicyLayer: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <EvidenceMarker type="VERIFIED" label="VERIFIED POLICY FRAMEWORK" source="MoPSW Maritime India Vision 2030" />
+          <EvidenceMarker type="VERIFIED" label="VERIFIED POLICY FRAMEWORK" source="MoPSW Maritime India Vision 2030" evidenceId="POLICY-001" />
         </div>
       </div>
 
@@ -35,7 +35,7 @@ export const IndianPolicyLayer: React.FC = () => {
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <span className="text-[10px] text-emerald-400 font-bold">LEVEL 01</span>
-              <EvidenceMarker type="VERIFIED" inline={true} />
+              <EvidenceMarker type="VERIFIED" inline={true} evidenceId="POLICY-001" />
             </div>
             <h4 className="text-xs font-bold text-white uppercase">
               INDIA'S GREEN SHIPPING POLICY
@@ -54,7 +54,7 @@ export const IndianPolicyLayer: React.FC = () => {
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <span className="text-[10px] text-sky-400 font-bold">LEVEL 02</span>
-              <EvidenceMarker type="VERIFIED" inline={true} />
+              <EvidenceMarker type="VERIFIED" inline={true} evidenceId="POLICY-002" />
             </div>
             <h4 className="text-xs font-bold text-white uppercase">
               GREEN FINANCE WINDOWS

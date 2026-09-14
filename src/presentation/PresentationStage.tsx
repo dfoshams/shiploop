@@ -250,6 +250,15 @@ export const PresentationStage: React.FC<PresentationStageProps> = ({ onOpenSour
           </div>
 
           <button
+            onClick={() => onOpenSources?.()}
+            className="hidden sm:flex items-center gap-1.5 px-2 py-1 bg-white/5 hover:bg-white/10 text-white/80 hover:text-[#00F2FF] border border-white/20 text-[10px] font-bold tracking-wider uppercase transition-all cursor-pointer"
+            title="Open Evidence & Sources Drawer"
+          >
+            <BookOpen className="w-3 h-3 text-[#00F2FF]" />
+            <span>SOURCES</span>
+          </button>
+
+          <button
             onClick={toggleFullscreen}
             className="p-1.5 text-white/60 hover:text-[#00F2FF] transition-colors"
             title="Toggle Fullscreen (F)"

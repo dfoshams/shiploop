@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Activity, Globe, Info, AlertTriangle, ChevronRight, Gauge } from 'lucide-react';
 import { FEET_DATA_RECORDS } from '../../data/feetData';
+import { SourceButton } from '../SourceButton';
 
 export const FeetPerformanceEvidence: React.FC = () => {
   const pilotRecord = FEET_DATA_RECORDS.find(r => r.id === 'FEET-006')!;
@@ -24,6 +25,7 @@ export const FeetPerformanceEvidence: React.FC = () => {
               <span className="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider">
                 EMPIRICAL PILOT TELEMETRY
               </span>
+              <SourceButton evidenceId="BENCHMARK-001" />
             </div>
             <span className="px-2.5 py-1 rounded bg-emerald-500/15 border border-emerald-500/50 text-emerald-300 text-[10px] font-mono font-extrabold tracking-widest uppercase">
               [ VERIFIED PILOT DATA ]
@@ -126,6 +128,7 @@ export const FeetPerformanceEvidence: React.FC = () => {
               <span className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider">
                 MARKET ADOPTION SIGNAL
               </span>
+              <SourceButton evidenceId="BENCHMARK-001" />
             </div>
             <span className="px-2.5 py-1 rounded bg-cyan-500/15 border border-cyan-500/50 text-cyan-300 text-[10px] font-mono font-extrabold tracking-widest uppercase">
               [ CONTEXTUAL MARKET DATA ]

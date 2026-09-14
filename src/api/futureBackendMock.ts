@@ -59,12 +59,12 @@ export const futureBackend = {
       },
       {
         id: 'opt-rotor-sails',
-        name: 'Mechanical Flettner Rotor Wind Assist',
+        name: 'Mechanical Flettner Rotor Wind Assist (4 Medium Rotors)',
         category: 'WIND_ASSIST',
-        capexINRCr: 11.5,
-        expectedEfficiencyPercentRange: [8.0, 16.0],
+        capexINRCr: 30.0,
+        expectedEfficiencyPercentRange: [7.0, 9.5],
         installationTimeDays: 18,
-        technologyReadinessLevel: 8,
+        technologyReadinessLevel: 9,
       },
       {
         id: 'opt-duct-boss',
@@ -98,15 +98,16 @@ export const futureBackend = {
 
   // POST /verification
   async verifySavingsCertificate(vesselId: string, reportingPeriodDays: number = 300) {
+    const defaultSim = calculateSimulation(DEMO_DATA.defaultSimulationParams);
     return {
       certificateId: `SL-VER-${Math.floor(100000 + Math.random() * 900000)}`,
       vesselId,
       status: 'VERIFIED_BY_ORACLE',
-      baselineTonnesPerDay: 33.3,
-      measuredTonnesPerDay: 28.3,
-      actualSavingPercentage: 15.01,
-      totalFuelSavedTonnes: 1500,
-      monetarySettlementINR: '₹7.50 Cr',
+      baselineTonnesPerDay: +(DEMO_DATA.defaultSimulationParams.annualFuelConsumption / reportingPeriodDays).toFixed(1),
+      measuredTonnesPerDay: +((DEMO_DATA.defaultSimulationParams.annualFuelConsumption - defaultSim.annualFuelSavedTonnes) / reportingPeriodDays).toFixed(1),
+      actualSavingPercentage: DEMO_DATA.defaultSimulationParams.efficiencyImprovementPercent,
+      totalFuelSavedTonnes: Math.round(defaultSim.annualFuelSavedTonnes),
+      monetarySettlementINR: `₹${defaultSim.grossAnnualSavingsINR.toFixed(2)} Cr`,
       cryptographicHash: '0x8f7b2c91a4e5d6f3910c281e594d7b1a03f49c81',
       auditor: 'Maritime Data Oracle & DNV Telemetry Integration (Simulated)',
     };
@@ -118,7 +119,7 @@ export const futureBackend = {
       eligible: dscr >= 1.15,
       maxLTV: 1.0, // 100% upfront financing
       recommendedTenorYears: 6,
-      indicativeInterestRatePercent: 8.5,
+      indicativeInterestRatePercent: 0.0,
       creditEnhancement: 'SPV Fuel Savings Assignment + First Lien on Savings Account',
     };
   },

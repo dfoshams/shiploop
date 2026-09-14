@@ -20,11 +20,12 @@ import { SimulationParams } from './types';
 import { calculateSimulation } from './logic/financialModel';
 import { PresentationProvider, usePresentation } from './presentation/PresentationContext';
 import { PresentationStage } from './presentation/PresentationStage';
+import { EvidenceProvider, useEvidence } from './context/EvidenceContext';
 
 function MainAppContent() {
   const [params, setParams] = useState<SimulationParams>(DEMO_DATA.defaultSimulationParams);
   const [activeSection, setActiveSection] = useState<string>('intro');
-  const [isSourcesOpen, setIsSourcesOpen] = useState<boolean>(false);
+  const { openSource } = useEvidence();
 
   const { 
     isPresentationMode, 
@@ -121,11 +122,8 @@ function MainAppContent() {
   if (isPresentationMode) {
     return (
       <>
-        <PresentationStage onOpenSources={() => setIsSourcesOpen(true)} />
-        <SourceDrawer
-          isOpen={isSourcesOpen}
-          onClose={() => setIsSourcesOpen(false)}
-        />
+        <PresentationStage onOpenSources={() => openSource()} />
+        <SourceDrawer />
       </>
     );
   }
@@ -144,7 +142,7 @@ function MainAppContent() {
         onNavigate={scrollToSection}
         isPresentationMode={false}
         onTogglePresentationMode={() => enterPresentationMode(activeSection)}
-        onOpenSources={() => setIsSourcesOpen(true)}
+        onOpenSources={() => openSource()}
       />
 
       {/* Main Experience Flow */}
@@ -217,15 +215,12 @@ function MainAppContent() {
           onGoToSimulator={() => scrollToSection('simulator')}
           onGoToEngine={() => scrollToSection('engine')}
           onRestart={() => scrollToSection('intro')}
-          onOpenSources={() => setIsSourcesOpen(true)}
+          onOpenSources={() => openSource()}
         />
       </main>
 
       {/* Slide-out Research Sources Drawer */}
-      <SourceDrawer
-        isOpen={isSourcesOpen}
-        onClose={() => setIsSourcesOpen(false)}
-      />
+      <SourceDrawer />
 
       {/* Technical Data Grid Telemetry Footer */}
       <footer className="relative z-10 border-t border-white/10 bg-[#020617]/95 backdrop-blur-md py-6 px-4 sm:px-8 text-[11px] font-mono tracking-wider text-white/50">
@@ -261,7 +256,7 @@ function MainAppContent() {
 
             <div className="flex items-center gap-4 text-white/60">
               <button 
-                onClick={() => setIsSourcesOpen(true)}
+                onClick={() => openSource()}
                 className="hover:text-[#00F2FF] transition-colors uppercase tracking-widest text-[10px] cursor-pointer"
               >
                 [SOURCES]
@@ -293,8 +288,10 @@ export default function App() {
   };
 
   return (
-    <PresentationProvider onExitToExplore={handleExitToExplore}>
-      <MainAppContent />
-    </PresentationProvider>
+    <EvidenceProvider>
+      <PresentationProvider onExitToExplore={handleExitToExplore}>
+        <MainAppContent />
+      </PresentationProvider>
+    </EvidenceProvider>
   );
 }

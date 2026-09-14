@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AlertTriangle, ArrowDown, DollarSign, Fuel, Lock, TrendingDown, HelpCircle, Flame } from 'lucide-react';
+import { DEMO_DATA } from '../data/demoData';
+import { SourceButton } from './SourceButton';
 
 interface TheProblemProps {
   isPresentationMode?: boolean;
@@ -31,14 +33,15 @@ export const TheProblem: React.FC<TheProblemProps> = ({
   const barriers = [
     {
       title: 'HIGH UPFRONT CAPEX',
-      metric: '₹8 – 20 Cr',
-      metricSecondary: '($1.0M – $2.4M USD)',
+      metric: '₹8 – 30 Cr',
+      metricSecondary: '($0.84M – $3.14M USD)',
       subtitle: 'Balance Sheet Gridlock',
       desc: 'Shipowners operate in volatile freight cycles and cannot lock tens of crores in discretionary hull, propulsion, or wind assist hardware with cash on hand.',
       icon: DollarSign,
       color: 'from-rose-500/20 to-amber-500/10',
       borderColor: 'border-rose-500/40',
       accentColor: 'text-rose-400',
+      evidenceId: 'FIN-001',
     },
     {
       title: 'UNCERTAIN PAYBACK',
@@ -49,6 +52,7 @@ export const TheProblem: React.FC<TheProblemProps> = ({
       color: 'from-amber-500/20 to-orange-500/10',
       borderColor: 'border-amber-500/40',
       accentColor: 'text-amber-400',
+      evidenceId: 'RISK-001',
     },
     {
       title: '',
@@ -59,6 +63,7 @@ export const TheProblem: React.FC<TheProblemProps> = ({
       color: 'from-cyan-500/20 to-blue-500/10',
       borderColor: 'border-cyan-500/40',
       accentColor: 'text-cyan-400',
+      evidenceId: 'CHARTER-001',
     },
   ];
 
@@ -85,7 +90,7 @@ export const TheProblem: React.FC<TheProblemProps> = ({
           </h2>
 
           <p className={`${isPresentationMode ? 'text-xs sm:text-sm mt-2' : 'text-base sm:text-lg mt-4'} text-white/60 font-mono font-normal`}>
-            The engineering solutions already exist. Rotor sails, air lubrication, and high-efficiency hydrodynamics are proven. The failure is <span className="text-[#00F2FF] underline decoration-[#00F2FF]/40">how maritime retrofits are underwritten and financed</span>.
+            The engineering solutions already exist. Rotor sails, air lubrication, and high-efficiency hydrodynamics are proven <SourceButton evidenceId="TECH-001" className="ml-1" />. The failure is <span className="text-[#00F2FF] underline decoration-[#00F2FF]/40">how maritime retrofits are underwritten and financed</span>.
           </p>
         </div>
 
@@ -103,9 +108,12 @@ export const TheProblem: React.FC<TheProblemProps> = ({
                 } cursor-pointer transition-all duration-200 tech-corner-accent`}
               >
                 <div className="flex items-center justify-between mb-2 sm:mb-4">
-                  <span className={`text-xs font-mono font-bold tracking-wider ${b.accentColor}`}>
-                    0{idx + 1} // BARRIER
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className={`text-xs font-mono font-bold tracking-wider ${b.accentColor}`}>
+                      0{idx + 1} // BARRIER
+                    </span>
+                    <SourceButton evidenceId={b.evidenceId} />
+                  </div>
                   <div className="p-1.5 sm:p-2 bg-[#020617] border border-white/10">
                     <Icon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${b.accentColor}`} />
                   </div>
@@ -164,9 +172,14 @@ export const TheProblem: React.FC<TheProblemProps> = ({
                 <div className="w-8 h-8 bg-white/5 border border-[#FFB347]/40 flex items-center justify-center font-mono text-xs font-bold text-[#FFB347]">
                   02
                 </div>
-                <div>
-                  <div className="text-[10px] font-mono text-white/40 uppercase">MASSIVE FUEL COST</div>
-                  <div className="text-sm font-mono font-bold text-[#FFB347]">10,000 tonnes burned @ ₹50,000/t = ₹50.0 Cr/yr</div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-mono text-white/40 uppercase">MASSIVE FUEL COST</span>
+                    <SourceButton evidenceId="MARKET-001" />
+                  </div>
+                  <div className="text-sm font-mono font-bold text-[#FFB347]">
+                    {DEMO_DATA.defaultSimulationParams.annualFuelConsumption.toLocaleString()} tonnes burned @ ₹{DEMO_DATA.defaultSimulationParams.fuelPricePerTonneINR.toLocaleString()}/MT = ₹{((DEMO_DATA.defaultSimulationParams.annualFuelConsumption * DEMO_DATA.defaultSimulationParams.fuelPricePerTonneINR) / DEMO_DATA.constants.inrCroreToUnits).toFixed(1)} Cr/yr
+                  </div>
                 </div>
               </div>
 
@@ -178,8 +191,11 @@ export const TheProblem: React.FC<TheProblemProps> = ({
                 <div className="w-8 h-8 bg-white/5 border border-rose-500/40 flex items-center justify-center font-mono text-xs font-bold text-rose-300">
                   03
                 </div>
-                <div>
-                  <div className="text-[10px] font-mono text-white/40 uppercase">OPERATING EXPENSE BURDEN</div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-mono text-white/40 uppercase">OPERATING EXPENSE BURDEN</span>
+                    <SourceButton evidenceId="MARKET-001" />
+                  </div>
                   <div className="text-sm font-mono font-bold text-white/80 uppercase">Fuel represents 50–65% of total voyage operating costs</div>
                 </div>
               </div>
