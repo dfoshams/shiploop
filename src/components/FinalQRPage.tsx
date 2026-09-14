@@ -110,7 +110,7 @@ export const FinalQRPage: React.FC = () => {
             >
               <div className="bg-white p-4 rounded-md transition-transform duration-500 w-[280px] h-[280px] md:w-[340px] md:h-[340px] flex items-center justify-center">
                 <img 
-                  src="/https_dfoshams_github_io_shiploop_.png" 
+                 src={`${import.meta.env.BASE_URL}https_dfoshams_github_io_shiploop_.png`} 
                   alt="SHIPLOOP QR Code" 
                   className="w-full h-full object-contain" 
                 />
